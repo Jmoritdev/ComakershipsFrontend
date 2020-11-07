@@ -5,13 +5,20 @@
       <Login v-if="!this.$store.getters.isAuthenticated" />
       <product-list v-if="this.$store.getters.isAuthenticated" />
       <HelloWorld/> -->
+      <NewUser/>
+      <Login v-if="!this.$store.getters.isAuthenticated" />
       <comakership-list />
+      <GetUser/>
+      <DeleteUser/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-//import Login from './components/Login';
+import Login from './components/Login';
+import NewUser from './components/NewUser';
+import GetUser from './components/GetUser';
+import DeleteUser from './components/DeleteUser';
 //import ProductList from './components/ProductList'
 // import HelloWorld from './components/HelloWorld';
 
@@ -21,9 +28,12 @@ export default {
   name: "App",
 
   components: {
-    // Login,
+    Login,
     // ProductList,
     // HelloWorld
+    NewUser,
+    GetUser,
+    DeleteUser,
     ComakershipList,
   },
 
