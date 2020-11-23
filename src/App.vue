@@ -12,6 +12,7 @@
 
       <Comakership-list />
       <Comakership />
+      <ComakershipPost />
     </v-main>
   </v-app>
 </template>
@@ -26,6 +27,7 @@ import DeleteUser from "./components/DeleteUser";
 
 import ComakershipList from "./components/comakership/ComakershipList";
 import Comakership from "./components/comakership/Comakership";
+import ComakershipPost from "./components/comakership/ComakershipPost";
 
 export default {
   name: "App",
@@ -39,6 +41,7 @@ export default {
     DeleteUser,
     ComakershipList,
     Comakership,
+    ComakershipPost,
   },
 
   data: () => ({
