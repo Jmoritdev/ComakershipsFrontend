@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import axios from "../axios-auth";
+import axios from "../../axios-auth";
 
 export default {
   components: {},
@@ -25,8 +25,8 @@ export default {
         { text: "Id", value: "id" },
         { text: "Name", value: "name" },
         { text: "Description", value: "description" },
-        { text: "Company Name", value: "companyName" },
-        { text: "Company City", value: "companyCity" },
+        { text: "Company Name", value: "company.name" },
+        { text: "Company City", value: "company.city" },
         { text: "Credits", value: "credits" },
         { text: "Bonus", value: "bonus" },
       ];

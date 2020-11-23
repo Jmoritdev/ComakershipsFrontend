@@ -5,24 +5,27 @@
       <Login v-if="!this.$store.getters.isAuthenticated" />
       <product-list v-if="this.$store.getters.isAuthenticated" />
       <HelloWorld/> -->
-      <NewUser/>
+      <NewUser />
       <Login v-if="!this.$store.getters.isAuthenticated" />
-      <comakership-list />
-      <GetUser/>
-      <DeleteUser/>
+      <GetUser />
+      <DeleteUser />
+
+      <Comakership-list />
+      <Comakership />
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Login from './components/Login';
-import NewUser from './components/NewUser';
-import GetUser from './components/GetUser';
-import DeleteUser from './components/DeleteUser';
+import Login from "./components/Login";
+import NewUser from "./components/NewUser";
+import GetUser from "./components/GetUser";
+import DeleteUser from "./components/DeleteUser";
 //import ProductList from './components/ProductList'
 // import HelloWorld from './components/HelloWorld';
 
-import ComakershipList from "./components/ComakershipList";
+import ComakershipList from "./components/comakership/ComakershipList";
+import Comakership from "./components/comakership/Comakership";
 
 export default {
   name: "App",
@@ -35,6 +38,7 @@ export default {
     GetUser,
     DeleteUser,
     ComakershipList,
+    Comakership,
   },
 
   data: () => ({
