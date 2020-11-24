@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
     state: {
         token: null,
-        username: null
+        userType: null,
+        userId: null
     },
     getters: {
         isAuthenticated(state) {
@@ -16,23 +17,25 @@ export const store = new Vuex.Store({
     },
     mutations: {
         authUser(state, userData) {
-            state.token = userData.token
-            state.username = userData.userDetails.userName
+            state.token = userData.Token
+            state.userId = userData.UserId
+            state.userType = userData.UserType
         }
     },
     actions: {
         login({ commit }, authData) {
             axios
-                .post("/Login", {
-                    username: authData.username,
+                .post("api/login", {
+                    email: authData.email,
                     password: authData.password,
                 })
                 .then((res) => {
                     console.log(res.data);
                     commit('authUser', res.data);
-                    axios.defaults.headers.common['Authorization'] = "Bearer "  + res.data.token;
-                    localStorage.token = res.data.token;
-                    localStorage.userName = res.data.userDetails.userName;
+                    axios.defaults.headers.common['Authorization'] = "Bearer "  + res.data.Token;
+                    localStorage.token = res.data.Token;
+                    localStorage.userId = res.data.userId;
+                    localStorage.userType = res.data.UserType;
                 })
                 .catch((error) => (this.error = error));
         }
