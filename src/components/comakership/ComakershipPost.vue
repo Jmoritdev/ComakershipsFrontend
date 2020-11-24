@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div class="my-4">
     <h2>Create Comakership</h2>
     <v-form ref="form">
       <v-text-field v-model="name" label="Name"></v-text-field>
@@ -46,7 +46,7 @@
         Create Comakership
       </v-btn>
     </v-form>
-  </v-container>
+  </div>
 </template>
 
 <script>

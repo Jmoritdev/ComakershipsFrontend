@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="my-4">
     <h2>List of Comakerships</h2>
     <v-data-table
       :headers="headers"
@@ -9,15 +9,17 @@
       @update="loadData()"
     ></v-data-table>
     <comakership-post @update="loadData()" />
+    <comakership-put @update="loadData()" />
   </v-container>
 </template>
 
 <script>
 import axios from "../../axios-auth";
 import ComakershipPost from "./ComakershipPost.vue";
+import ComakershipPut from "./ComakershipPut.vue";
 
 export default {
-  components: { ComakershipPost },
+  components: { ComakershipPost, ComakershipPut },
   data() {
     return {
       comakerships: [],

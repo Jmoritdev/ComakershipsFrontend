@@ -10,10 +10,8 @@
       <Login />
       <GetUser />
       <DeleteUser />
-
-      <Comakership-list />
       <Comakership />
-      <ComakershipPost />
+      <Comakership-list />
     </v-main>
   </v-app>
 </template>
