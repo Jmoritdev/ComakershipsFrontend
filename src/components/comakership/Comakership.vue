@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h2>Get a Comakership by ID</h2>
     <div class="row" v-if="Comakership">
       <div class="col-6">
         <p>Id: {{ Comakership.id }}</p>

@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h2>Create Comakership</h2>
     <v-form ref="form">
       <v-text-field v-model="name" label="Name"></v-text-field>
       <v-text-field v-model="description" label="Description"></v-text-field>
@@ -93,8 +94,11 @@ export default {
         Description: this.description,
         Credits: this.credits,
         Bonus: this.bonus,
-        CompanyId: this.companyId,
+        CompanyId: parseInt(this.companyId),
         PurchaseKey: this.purchaseKey,
+        Deliverables: this.deliverables,
+        Skills: this.skills,
+        Programs: this.programs,
       };
       console.log(postData);
       axios

@@ -6,7 +6,8 @@
       <product-list v-if="this.$store.getters.isAuthenticated" />
       <HelloWorld/> -->
       <NewUser />
-      <Login v-if="!this.$store.getters.isAuthenticated" />
+      <!-- <Login v-if="!this.$store.getters.isAuthenticated" /> -->
+      <Login />
       <GetUser />
       <DeleteUser />
 
@@ -27,7 +28,6 @@ import DeleteUser from "./components/DeleteUser";
 
 import ComakershipList from "./components/comakership/ComakershipList";
 import Comakership from "./components/comakership/Comakership";
-import ComakershipPost from "./components/comakership/ComakershipPost";
 
 export default {
   name: "App",
@@ -41,7 +41,6 @@ export default {
     DeleteUser,
     ComakershipList,
     Comakership,
-    ComakershipPost,
   },
 
   data: () => ({
