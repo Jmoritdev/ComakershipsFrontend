@@ -4,7 +4,7 @@
     <h2>List of Comakerships</h2>
     <v-data-table
       :headers="headers"
-      :items="comakerships"
+      :items="$store.state.comakerships.comakerships"
       :items-per-page="15"
       class="elevation-1"
     ></v-data-table>    
@@ -16,11 +16,13 @@
 export default {
     name: "Comakerships",
     data() {
-        return {
-        comakerships: [],
+        return {        
         };
   },
   computed: {
+    comakerships(){
+           return this.$store.state.comakerships.comakerships;
+    },           
     headers() {
       return [
         { text: "Id", value: "id" },
@@ -36,8 +38,6 @@ export default {
    mounted() {
     this.$store.dispatch("getAllComakerships");
   },
-
-
 }
 </script>
 

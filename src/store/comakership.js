@@ -2,19 +2,21 @@ import axios from '../axios-auth'
 
 export const comakershipStore = {
     state: () => ({
-        comakerships: [ ],
+        comakerships: [],
         comakership: { },
         comakershipToEdit: { },        
     }),
     mutations: {
-
+        setComakership(state, comakerships){
+            state.comakerships = comakerships
+        }
     },
     actions: {
-        getAllComakerships(){
+        getAllComakerships({commit}){
             axios
                 .get("/api/comakerships")
                 .then((response) => {
-                    this.comakerships = response.data;
+                    commit('setComakership', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
