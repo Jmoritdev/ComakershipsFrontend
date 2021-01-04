@@ -14,7 +14,30 @@
 
 <script>
 export default {
-name: "Comakerships"
+    name: "Comakerships",
+    data() {
+        return {
+        comakerships: [],
+        };
+  },
+  computed: {
+    headers() {
+      return [
+        { text: "Id", value: "id" },
+        { text: "Name", value: "name" },
+        { text: "Description", value: "description" },
+        { text: "Company", value: "company.name" },
+        { text: "Credits", value: "credits" },
+        { text: "Bonus", value: "bonus" },
+        { text: "Status", value: "status.name" },
+      ];
+    },
+  },
+   mounted() {
+    this.$comakershipStore.dispatch("getAllComakerhips");
+  },
+
+
 }
 </script>
 
