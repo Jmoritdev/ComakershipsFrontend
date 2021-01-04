@@ -34,7 +34,7 @@ export default {
     },
   },
    mounted() {
-    this.$comakershipStore.dispatch("getAllComakerhips");
+    this.$store.dispatch("getAllComakerships");
   },
 
 

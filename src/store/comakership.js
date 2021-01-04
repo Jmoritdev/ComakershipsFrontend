@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from '../axios-auth'
 
 export const comakershipStore = {
     state: () => ({
@@ -10,7 +10,7 @@ export const comakershipStore = {
 
     },
     actions: {
-        getAllComakerhips(){
+        getAllComakerships(){
             axios
                 .get("/api/comakerships")
                 .then((response) => {
@@ -67,6 +67,8 @@ export const comakershipStore = {
         }
     },
     getters: {
-
+        comakerships(state){
+            return state.comakerships;
+        }
     }
 }
