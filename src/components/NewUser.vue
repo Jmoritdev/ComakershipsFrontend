@@ -2,8 +2,16 @@
   <v-card ref="form">
     <v-card-text>
       <v-text-field
-        v-model="userData.name"
-        label="Full Name"
+        v-model="userData.firstname"
+        label="First Name"
+      ></v-text-field>
+      <v-text-field
+        v-model="userData.lastname"
+        label="Last Name"
+      ></v-text-field>
+      <v-text-field
+        v-model="userData.nickname"
+        label="Nickname"
       ></v-text-field>
       <v-text-field
         v-model="userData.email"
@@ -15,16 +23,10 @@
         label="Password"
       ></v-text-field>
       <v-text-field
-        v-model="userData.studentNumber"
+        v-model="userData.programid"
         type="number"
-        label="Student Number"
+        label="Program id"
       ></v-text-field>
-      <v-select
-        v-model="userData.UniversityId"
-        item-text="name"
-        item-value="id"
-        :items="universities"
-      />
       <v-btn color="primary" @click="postNewUser"> Register </v-btn>
     </v-card-text>
   </v-card>
@@ -37,13 +39,14 @@ export default {
   data() {
     return {
       userData: {
-        name: "",
+        firstname: "",
+        lastname: "",
+        nickname: "",
         email: "",
-        password: "",
-        studentNumber: 0,
-        UniversityId: 0
-      },
-      universities: []
+        programid: 0,
+        password: ""
+      }
+      // universities: []
     };
   },
   methods: {
@@ -53,11 +56,12 @@ export default {
     postNewUser() {
       axios
         .post("http://localhost:7071/api/Students", {
-          name: this.userData.name,
+          firstName: this.userData.firstname,
+          lastName: this.userData.lastname,
+          nickname: this.userData.nickname,
           email: this.userData.email,
-          password: this.userData.password,
-          studentNumber: parseInt(this.userData.studentNumber), //why is this necessary for studentnumber but not for universityid 🤔
-          UniversityId: this.userData.UniversityId,
+          programId: parseInt(this.userData.programid),
+          password: this.userData.password
         })
         .then((res) =>
           console.log(res)
@@ -67,12 +71,12 @@ export default {
   },
   created(){
     console.log("Created called");
-    axios
-      .get("http://localhost:7071/api/universities/domains")
-      .then((result) => 
-        this.universities = result.data
-      )
-      .catch((error) => (this.error = error));
+    // axios
+    //   .get("http://localhost:7071/api/universities/domains")
+    //   .then((result) => 
+    //     this.universities = result.data
+    //   )
+    //   .catch((error) => (this.error = error));
   }
 };
 </script>

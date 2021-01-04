@@ -4,10 +4,13 @@
       <v-alert v-if="authData.error" type="error">
         {{ authData.error }}
       </v-alert>
-      <v-alert v-if="this.$store.getters.isAuthenticated" type="success">
-        Authenticated!
+      <v-alert v-if="authData.success" type="success">
+        {{ authData.success }}
       </v-alert>
-      <v-text-field v-model="authData.email" label="Email"></v-text-field>
+      <v-text-field
+        v-model="authData.Email"
+        label="Email"
+      ></v-text-field>
       <v-text-field
         v-model="authData.password"
         type="Password"
@@ -19,35 +22,35 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from 'axios'
 
 export default {
   data() {
     return {
       authData: {
-        email: "",
+        Email: "",
         password: "",
         error: "",
-        success: "",
+        success: ""
       },
     };
   },
   methods: {
-    login() {
-      this.$store.dispatch("login", this.authData);
-    },
     // login() {
-    //   axios
-    //     .post("http://localhost:7071/api/Login", {
-    //       Email: this.authData.Email,
-    //       Password: this.authData.password,
-    //     })
-    //     .then((res) =>
-    //      localStorage.setItem('bearer-token', 'Bearer ' + res.data),
-    //      this.authData.success = "Successfully logged in",
-    //     )
-    //     .catch((error) => (this.authData.error = error));
+    //   this.$store.dispatch("login", this.authData);
     // },
+    login() {
+      axios
+        .post("http://127.0.0.1:7071/api/Login", {
+          Email: this.authData.Email,
+          Password: this.authData.password,
+        })
+        .then((res) =>
+         localStorage.setItem('bearer-token', 'Bearer ' + res.data.Token),
+         this.authData.success = "Successfully logged in",
+        )
+        .catch((error) => (this.authData.error = error));
+    },
   },
 };
 </script>
