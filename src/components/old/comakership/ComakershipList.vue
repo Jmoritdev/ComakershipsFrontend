@@ -31,10 +31,10 @@ export default {
         { text: "Id", value: "id" },
         { text: "Name", value: "name" },
         { text: "Description", value: "description" },
-        { text: "Company Name", value: "company.name" },
-        { text: "Company City", value: "company.city" },
+        { text: "Company", value: "company.name" },
         { text: "Credits", value: "credits" },
         { text: "Bonus", value: "bonus" },
+        { text: "Status", value: "status.name" },
       ];
     },
   },
@@ -46,7 +46,6 @@ export default {
       axios
         .get("/api/comakerships")
         .then((response) => {
-          // console.log(response);
           this.comakerships = response.data;
         })
         .catch((error) => console.log(error));
