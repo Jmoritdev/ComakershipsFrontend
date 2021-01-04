@@ -18,20 +18,38 @@ export const userStore = {
     },
     actions: {
         login({ commit }, authData) {
+            // axios
+            //     .post("http://127.0.0.1:7071/api/Login", {
+            //         Email: this.authData.Email,
+            //         Password: this.authData.password,
+            //     })
+            //     .then((res) =>
+            //             localStorage.setItem('bearer-token', 'Bearer ' + res.data.Token),
+            //         this.authData.success = "Successfully logged in",
+            //     )
+            //     .catch((error) => (this.authData.error = error));
+
             axios
                 .post("api/login", {
-                    email: authData.email,
-                    password: authData.password,
+                    Email: authData.email,
+                    Password: authData.password,
                 })
                 .then((res) => {
+                    if (res.data.UserType === "studentUser") {
+                        return false;
+                    }
                     console.log(res.data);
                     commit('authUser', res.data);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.Token;
                     localStorage.token = res.data.Token;
                     localStorage.userId = res.data.userId;
                     localStorage.userType = res.data.UserType;
+                    return true;
                 })
-                .catch((error) => (this.error = error));
+                .catch((error) => {
+                    this.error = error;
+                    return false;
+                });
         }
     },
     getters: {

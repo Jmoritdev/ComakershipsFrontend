@@ -9,7 +9,7 @@
           {{ authData.success }}
         </v-alert>
         <v-text-field
-            v-model="authData.Email"
+            v-model="authData.email"
             label="Email"
         ></v-text-field>
         <v-text-field
@@ -27,14 +27,15 @@
 </template>
 
 <script>
-import axios from 'axios'
+
+import router from "@/router";
 
 export default {
   name: "Login",
   data() {
     return {
       authData: {
-        Email: "",
+        email: "",
         password: "",
         error: "",
         success: ""
@@ -46,16 +47,11 @@ export default {
     //   this.$store.dispatch("login", this.authData);
     // },
     login() {
-      axios
-          .post("http://127.0.0.1:7071/api/Login", {
-            Email: this.authData.Email,
-            Password: this.authData.password,
-          })
-          .then((res) =>
-                  localStorage.setItem('bearer-token', 'Bearer ' + res.data.Token),
-              this.authData.success = "Successfully logged in",
-          )
-          .catch((error) => (this.authData.error = error));
+      if(this.$store.dispatch("login", this.authData)) {
+        router.push({ name: 'Company'})
+      } else{
+        alert("email or password was incorrect, or you are not a company admin")
+      }
     },
   },
 };
