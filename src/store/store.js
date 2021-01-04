@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import userStore from './user'
-import companyStore from './company'
-import comakershipStore from './comakership'
-import employeesStore from './employees'
+import { userStore } from './user'
+import { companyStore } from './company'
+import { comakershipStore } from './comakership'
+import { employeesStore } from './employees'
 
 Vue.use(Vuex)
 

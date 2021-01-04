@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const comakershipStore = {
+export const comakershipStore = {
     state: () => ({
         comakerships: null,
         comakershipToEdit: { },

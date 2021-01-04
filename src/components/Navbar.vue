@@ -28,7 +28,7 @@
             :v-on="openPage(index)"
             :disabled="!$store.state.user.isAuthenticated"
         >
-          <router-link to=""> {{ route.name }}</router-link>
+          <router-link :to="{ path: route.path }"> {{ route.name }}</router-link>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

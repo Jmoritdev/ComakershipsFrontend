@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const employeesStore = {
+export const employeesStore = {
     state: () => ({
         employees: [],
         employeeToEdit: {},

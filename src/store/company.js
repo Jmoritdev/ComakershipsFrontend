@@ -1,5 +1,4 @@
-// eslint-disable-next-line no-unused-vars
-const companyStore = {
+export const companyStore = {
     state: () => ({
         companyId: null,
         name: "",

@@ -1,6 +1,6 @@
-import axios from '../axios-auth';
-// eslint-disable-next-line no-unused-vars
-const userStore = {
+import axios from '../axios-auth'
+
+export const userStore = {
     state: () => ({
         token: "",
         userId: null,
