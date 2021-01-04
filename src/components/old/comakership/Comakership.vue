@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import axios from "../../axios-auth";
+import axios from "../../../axios-auth";
 
 export default {
   components: {},

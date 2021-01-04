@@ -1,28 +1,27 @@
 <template>
-  <v-container class="my-4">
-    <h2>List of Comakerships</h2>
+  <v-container>
     <v-data-table
       :headers="headers"
-      :items="comakerships"
+      :items="products"
       :items-per-page="15"
       class="elevation-1"
-      @update="loadData()"
     ></v-data-table>
-    <comakership-post @update="loadData()" />
-    <comakership-put @update="loadData()" />
+      <product-form v-if="this.$store.getters.isAuthenticated" @update="loadData()" />
   </v-container>
+
 </template>
 
 <script>
+import ProductForm from './ProductForm'
 import axios from "../../axios-auth";
-import ComakershipPost from "./ComakershipPost.vue";
-import ComakershipPut from "./ComakershipPut.vue";
 
 export default {
-  components: { ComakershipPost, ComakershipPut },
+      components: {
+        ProductForm
+  },
   data() {
     return {
-      comakerships: [],
+      products: [],
     };
   },
   computed: {
@@ -30,11 +29,9 @@ export default {
       return [
         { text: "Id", value: "id" },
         { text: "Name", value: "name" },
+        { text: "Category", value: "category.name" },
         { text: "Description", value: "description" },
-        { text: "Company Name", value: "company.name" },
-        { text: "Company City", value: "company.city" },
-        { text: "Credits", value: "credits" },
-        { text: "Bonus", value: "bonus" },
+        { text: "Price", value: "price" },
       ];
     },
   },
@@ -44,10 +41,10 @@ export default {
   methods: {
     loadData() {
       axios
-        .get("/api/comakerships")
+        .get("/api/Products")
         .then((response) => {
           // console.log(response);
-          this.comakerships = response.data;
+          this.products = response.data;
         })
         .catch((error) => console.log(error));
     },
