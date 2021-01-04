@@ -23,12 +23,12 @@
           dense
       >
         <v-list-item
-            v-for="(page, index) in pages"
+            v-for="(route, index) in $router.options.routes"
             :key="index"
             :v-on="openPage(index)"
             :disabled="!$store.state.user.isAuthenticated"
         >
-          <router-link to=""> {{ page }}</router-link>
+          <router-link to=""> {{ route.name }}</router-link>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -40,11 +40,6 @@
 export default {
   name: "NavBar",
   data: () => ({
-    pages: [
-      "Login",
-      "Company",
-      "Employees"
-    ]
   }),
   methods: {
     openPage(index) {
@@ -53,9 +48,6 @@ export default {
     },
   },
   computed:{
-    state() {
-      return this.$store.state;
-    }
   }
 }
 </script>

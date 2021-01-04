@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import userStore from './user'
 import companyStore from './company'
+import comakershipStore from './comakership'
+import employeeStore from './employees'
 // import axios from '../axios-auth';
 
 Vue.use(Vuex)
@@ -10,6 +12,8 @@ export const store = new Vuex.Store({
     modules: {
         user: userStore,
         company: companyStore,
+        comakerships: comakershipStore,
+        employees: employeeStore
     }
     // state: {
     //     token: null,

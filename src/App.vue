@@ -2,7 +2,7 @@
   <v-app>
     <NavBar/>
     <v-app-bar app>
-
+      <b> xXCloudEnMobileProjectXx presents: Comakerships dashboard</b>
     </v-app-bar>
     <v-main>
       <v-container fluid>
