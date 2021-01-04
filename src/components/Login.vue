@@ -17,7 +17,7 @@
             type="Password"
             label="Password"
         ></v-text-field>
-        <v-btn color="primary" @click="login"> Login </v-btn>
+        <v-btn color="primary" @click="login"> Login</v-btn>
       </v-card-text>
     </v-card>
     <v-card v-if="$store.state.user.isAuthenticated">
@@ -27,8 +27,6 @@
 </template>
 
 <script>
-
-import router from "@/router";
 
 export default {
   name: "Login",
@@ -43,15 +41,8 @@ export default {
     };
   },
   methods: {
-    // login() {
-    //   this.$store.dispatch("login", this.authData);
-    // },
-    login() {
-      if(this.$store.dispatch("login", this.authData)) {
-        router.push({ name: 'Company'})
-      } else{
-        alert("email or password was incorrect, or you are not a company admin")
-      }
+    async login() {
+      await this.$store.dispatch("login", this.authData);
     },
   },
 };

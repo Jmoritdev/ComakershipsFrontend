@@ -25,10 +25,9 @@
         <v-list-item
             v-for="(route, index) in $router.options.routes"
             :key="index"
-            :v-on="openPage(index)"
             :disabled="!$store.state.user.isAuthenticated"
         >
-          <router-link :to="{ path: route.path }"> {{ route.name }}</router-link>
+          <router-link :to="{ name: route.name }"> {{ route.name }}</router-link>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -37,14 +36,15 @@
 
 <script>
 
+import router from "@/router";
+
 export default {
   name: "NavBar",
   data: () => ({
   }),
   methods: {
-    openPage(index) {
-      // change route
-      return index;
+    switchPage(name) {
+      router.push({name: name});
     },
   },
   computed:{

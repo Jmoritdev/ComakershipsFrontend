@@ -1,4 +1,5 @@
 import axios from '../axios-auth'
+import router from "@/router";
 
 export const userStore = {
     state: () => ({
@@ -17,39 +18,33 @@ export const userStore = {
         }
     },
     actions: {
-        login({ commit }, authData) {
-            // axios
-            //     .post("http://127.0.0.1:7071/api/Login", {
-            //         Email: this.authData.Email,
-            //         Password: this.authData.password,
-            //     })
-            //     .then((res) =>
-            //             localStorage.setItem('bearer-token', 'Bearer ' + res.data.Token),
-            //         this.authData.success = "Successfully logged in",
-            //     )
-            //     .catch((error) => (this.authData.error = error));
+        async login({commit}, authData) {
 
             axios
                 .post("api/login", {
-                    Email: authData.email,
-                    Password: authData.password,
+                    email: authData.email,
+                    password: authData.password,
                 })
                 .then((res) => {
-                    if (res.data.UserType === "studentUser") {
+                    if (res.data.UserType === "StudentUser") {
                         return false;
                     }
-                    console.log(res.data);
                     commit('authUser', res.data);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.Token;
-                    localStorage.token = res.data.Token;
-                    localStorage.userId = res.data.userId;
-                    localStorage.userType = res.data.UserType;
                     return true;
+                })
+                .then((response) => {
+                    if (response === true) {
+                        router.push({name: 'Company'});
+                    } else {
+                        alert("email or password was incorrect, or you are not a company admin")
+                    }
                 })
                 .catch((error) => {
                     this.error = error;
-                    return false;
+                    alert("email or password was incorrect, or you are not a company admin")
                 });
+
         }
     },
     getters: {

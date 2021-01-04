@@ -11,19 +11,31 @@
     </div>
 
     <v-form ref="form">
-      <v-text-field v-model="comakership.name" label="Name"></v-text-field>
+      <v-text-field
+       v-model="comakership.name" 
+      label="Name"
+      ></v-text-field>
       <v-text-field
         v-model="comakership.description"
         label="Description"
       ></v-text-field>
       <v-checkbox
         v-model="comakership.credits"
-        :label="`Credits: ${credits.toString()}`"
+        label="Credits"
       ></v-checkbox>
-      <v-checkbox
+      <v-checkbox        
         v-model="comakership.bonus"
-        :label="`Bonus: ${bonus.toString()}`"
+        label="Bonus"
       ></v-checkbox>
+
+      <v-select
+          v-model="comakership.status"          
+          :items="statusoptions"
+          item-text="name"
+          item-value="id"                   
+          return-object
+          label="Status"
+        ></v-select>
 
       <v-btn color="primary" @click="updateComakership">
         Update Comakership
@@ -33,7 +45,7 @@
 </template>
 
 <script>
-import axios from "../../../axios-auth";
+import axios from "../../axios-auth";
 
 export default {
   data() {
@@ -43,7 +55,14 @@ export default {
       description: null,
       credits: false,
       bonus: false,
+      comakershipStatusId: null,
       comakership: {},
+      status: null,
+      statusoptions: [
+          { id: 1, name: 'Not started'},
+          { id: 2, name: 'Started'},
+          { id: 3, name: 'Completed'},
+      ],
     };
   },
   methods: {
@@ -51,24 +70,28 @@ export default {
       axios
         .get("/api/comakerships/" + this.id)
         .then((response) => {
-          // console.log(response);
           this.comakership = response.data;
         })
         .catch((error) => console.log(error));
     },
     updateComakership() {
+        axios.defaults.headers.common["Authorization"] = localStorage.getItem(
+        "bearer-token"
+      );
       const putData = {
         Id: this.comakership.id,
         Name: this.comakership.name,
         Description: this.comakership.description,
         Credits: this.comakership.credits,
         Bonus: this.comakership.bonus,
+        ComakershipStatusId: this.comakership.status.id
       };
       console.log(putData);
       axios
         .put("/api/Comakerships/" + this.id, putData)
         .then((res) => {
           console.log(res.data);
+          this.id = "";
           this.$refs.form.reset();
           this.$emit("update");
         })
@@ -76,13 +99,7 @@ export default {
     },
   },
   mounted() {
-    // axios
-    //   .get("/api/Categories")
-    //   .then((response) => {
-    //     console.log(response);
-    //     this.categories = response.data;
-    //   })
-    //   .catch((error) => console.log(error));
+
   },
 };
 </script>
