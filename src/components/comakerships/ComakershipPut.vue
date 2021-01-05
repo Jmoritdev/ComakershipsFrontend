@@ -48,12 +48,15 @@
 				label="Status"
 				></v-select>
 			</div>
-			<div class="col-4 text-right">
-				<v-btn color="primary" @click="updateComakership">
-					Update Comakership
-				</v-btn>
-			</div>
-		</div>	  
+
+		</div>
+        <div class="row">
+            <div class="col-12 text-right">
+                <v-btn color="primary" @click="updateComakership">
+                Update Comakership
+                </v-btn>
+            </div>
+        </div>
 	</v-form>
   </div>
 </template>
