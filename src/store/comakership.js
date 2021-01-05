@@ -4,11 +4,21 @@ export const comakershipStore = {
     state: () => ({
         comakerships: [],
         comakership: { },
+        comakershipComplete: { },
         comakershipToEdit: { },        
     }),
     mutations: {
-        setComakership(state, comakerships){
+        setComakerships(state, comakerships){
             state.comakerships = comakerships
+        },
+        setComakership(state, comakership){
+            state.comakership = comakership
+        },
+        setComakershipComplete(state, comakershipComplete){
+            state.comakershipComplete = comakershipComplete
+        },
+        setComakershipToEdit(state, comakershipToEdit){
+            state.comakershipToEdit = comakershipToEdit
         }
     },
     actions: {
@@ -16,18 +26,17 @@ export const comakershipStore = {
             axios
                 .get("/api/comakerships")
                 .then((response) => {
-                    commit('setComakership', response.data);
+                    commit('setComakerships', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        // eslint-disable-next-line no-empty-pattern
-        getComakershipCompleteById({}, id){
+        getComakershipCompleteById({commit}, id){
             axios
                 .get('/api/comakerships/'+id+'/complete')
                 .then((response) => {
-                    this.comakership = response.data;
+                    commit('setComakershipComplete', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
@@ -45,34 +54,49 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        loadComakershipToEdit(id){
+        loadComakershipToEdit({commit}, id){
             axios
                 .get("/api/comakerships/" + id)
                 .then((response) => {
-                    this.comakershipToEdit = response.data;
+                    commit('setComakershipToEdit', response.data);                    
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
         // eslint-disable-next-line no-empty-pattern
-        putComakership({}, id, putData){
-            axios
-                .put("/api/Comakerships/"+id, putData)
+        putComakership({dispatch},putData){
+            axios               
+                .put(`/api/comakerships/${putData.urlId}`, {
+                    id: putData.id,
+                    name: putData.name,
+                    description: putData.description,
+                    credits: putData.credits,
+                    bonus: putData.bonus,
+                    comakershipStatusId: putData.comakershipStatusId
+                })
                 .then((response) => {
                     console.log(response.data);
-                    this.id = "";
-                    this.$refs.form.reset();
-                    this.$emit("update");
+                    dispatch('getAllComakerships');
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         }
+        
     },
     getters: {
         comakerships(state){
             return state.comakerships;
+        },
+        comakership(state){
+            return state.comakership;
+        },
+        comakershipComplete(state){
+            return state.comakershipComplete;
+        },
+        comakershipToEdit(state){
+            return state.comakershipToEdit;
         }
     }
 }
