@@ -7,9 +7,12 @@
             :items="$store.state.comakerships.comakerships"
             :items-per-page="15"
             class="elevation-1"
-            ></v-data-table>   
-            <comakership-put @update="loadData()" /> 
+            ></v-data-table>            
         </v-container>
+        
+        <v-container class="my-4">
+            <comakership-put /> 
+        </v-container>        
     </div>
 </template>
 

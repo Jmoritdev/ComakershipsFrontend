@@ -55,16 +55,16 @@ export const comakershipStore = {
             axios
                 .get("/api/comakerships/" + id)
                 .then((response) => {
-                    commit('setComakershipToEdit', response.data);
-                    // this.comakershipToEdit = response.data;
+                    commit('setComakershipToEdit', response.data);                    
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        putComakership(id, putData){
-            axios
-                .put("/api/comakerships/" + id, {
+        // eslint-disable-next-line no-empty-pattern
+        putComakership({dispatch},putData){
+            axios               
+                .put(`/api/comakerships/${putData.urlId}`, {
                     id: putData.id,
                     name: putData.name,
                     description: putData.description,
@@ -72,16 +72,13 @@ export const comakershipStore = {
                     bonus: putData.bonus,
                     comakershipStatusId: putData.comakershipStatusId
                 })
-                // .then((response) => {
-                //     console.log(response.data);
-                //     console.log(putData);
-                //     //this.id = "";
-                //     //this.$refs.form.reset();
-                //     //this.$emit("update");
-                // })
-                // .catch((error) => {
-                //     this.error = error;
-                // });
+                .then((response) => {
+                    console.log(response.data);
+                    dispatch('getAllComakerships');
+                })
+                .catch((error) => {
+                    this.error = error;
+                });
         }
         
     },

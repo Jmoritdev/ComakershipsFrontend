@@ -7,7 +7,7 @@
         label="Comakership Id"
         class="col-3"
       ></v-text-field>
-      <v-btn color="primary" @click="loadData()">Fetch</v-btn>
+      <v-btn color="primary" @click="fetchComakershipToEdit()">Fetch</v-btn>
     </div>
 
     <v-form ref="form">
@@ -27,7 +27,6 @@
         v-model="comakership.bonus"
         label="Bonus"
       ></v-checkbox>
-
       <v-select
           v-model="comakership.status"          
           :items="statusoptions"
@@ -36,7 +35,6 @@
           return-object
           label="Status"
         ></v-select>
-
       <v-btn color="primary" @click="updateComakership">
         Update Comakership
       </v-btn>
@@ -45,8 +43,6 @@
 </template>
 
 <script>
-//import axios from "../../axios-auth";
-
 export default {
   data() {
     return {
@@ -64,11 +60,12 @@ export default {
     },      
   },
   methods: {
-    loadData() {
+    fetchComakershipToEdit() {
         this.$store.dispatch("loadComakershipToEdit", this.id);
     },
     updateComakership() {
         const putData = {
+            urlId: this.id,
             id: this.comakership.id,
             name: this.comakership.name,
             description: this.comakership.description,
@@ -76,28 +73,10 @@ export default {
             bonus: this.comakership.bonus,
             comakershipStatusId: this.comakership.status.id
         };
-        this.$store.dispatch("putComakership", this.id, putData);
-    },
-    // updateComakership() {
-    //   const putData = {
-    //     Id: this.comakership.id,
-    //     Name: this.comakership.name,
-    //     Description: this.comakership.description,
-    //     Credits: this.comakership.credits,
-    //     Bonus: this.comakership.bonus,
-    //     ComakershipStatusId: this.comakership.status.id
-    //   };
-    //   console.log(putData);
-    //   axios
-    //     .put("/api/Comakerships/" + this.id, putData)
-    //     .then((res) => {
-    //       console.log(res.data);
-    //       this.id = "";
-    //       this.$refs.form.reset();
-    //       this.$emit("update");
-    //     })
-    //     .catch((error) => console.log(error.response.request._response));
-    // },
+        this.$store.dispatch("putComakership", putData);
+        this.id = "";
+        this.$refs.form.reset();        
+    },    
   },
   mounted() {
 
