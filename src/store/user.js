@@ -7,7 +7,7 @@ export const userStore = {
         userId: null,
         userType: null,
         name: "",
-        email: "null",
+        email: "",
     }),
     mutations: {
         authUser(state, userData) {
@@ -18,6 +18,13 @@ export const userStore = {
         setUser(state, userData) {
             state.name = userData.name;
             state.email = userData.email;
+        },
+        resetState(state) {
+            state.token = null;
+            state.userId = null;
+            state.userType = null;
+            state.name = "";
+            state.email = "";
         }
     },
     actions: {
@@ -46,6 +53,11 @@ export const userStore = {
                     alert("email or password was incorrect, or you are not a company admin");
                 });
 
+        },
+
+        logout({commit}) {
+            commit('resetState');
+            router.push({ name: 'Home'});
         },
 
         getUser({commit}, id) {
