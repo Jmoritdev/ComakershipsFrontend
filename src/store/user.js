@@ -3,7 +3,7 @@ import router from "@/router";
 
 export const userStore = {
     state: () => ({
-        token: "",
+        token: null,
         userId: null,
         userType: null,
         name: "",
@@ -12,13 +12,18 @@ export const userStore = {
     }),
     mutations: {
         authUser(state, userData) {
-            state.token = userData.Token
-            state.userId = userData.UserId
-            state.userType = userData.UserType
+            state.token = userData.Token;
+            state.userId = userData.UserId;
+            state.userType = userData.UserType;
+        },
+        setUser(state, userData) {
+            state.name = userData.Name;
+            state.email = userData.Email;
+            state.companyId = userData.CompanyId;
         }
     },
     actions: {
-        async login({commit}, authData) {
+        login({commit}, authData) {
 
             axios
                 .post("api/login", {
@@ -34,22 +39,42 @@ export const userStore = {
                     return true;
                 })
                 .then((response) => {
+                    // console.log(this.state.user.name)
                     if (response === true) {
                         router.push({name: 'Company'});
-                    } else {
-                        alert("email or password was incorrect, or you are not a company admin")
                     }
                 })
                 .catch((error) => {
                     this.error = error;
-                    alert("email or password was incorrect, or you are not a company admin")
+                    alert("email or password was incorrect, or you are not a company admin");
                 });
 
+        },
+
+        getUser({commit}, id) {
+            if (id.isInteger) {
+                axios
+                    .get("api/CompanyUser/" + id)
+                    .then((response) => {
+                        console.log(response.data);
+                        commit('setUser', response.data);
+                    })
+                    .catch((error) => {
+                        this.error = error;
+                        alert("something went wrong while getting userdata");
+                    });
+            }
         }
     },
     getters: {
         isAuthenticated(state) {
             return state.token != null;
+        },
+        userId(state) {
+            return state.userId;
+        },
+        userType(state) {
+            return state.userType;
         },
         name(state) {
             return state.name;

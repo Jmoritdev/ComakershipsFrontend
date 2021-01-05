@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card v-if="!$store.state.user.isAuthenticated" ref="form">
+    <v-card v-if="!$store.state.isAuthenticated" ref="form">
       <v-card-text>
         <v-alert v-if="authData.error" type="error">
           {{ authData.error }}
@@ -20,7 +20,7 @@
         <v-btn color="primary" @click="login"> Login</v-btn>
       </v-card-text>
     </v-card>
-    <v-card v-if="$store.state.user.isAuthenticated">
+    <v-card v-if="$store.state.isAuthenticated">
       <h1> You are already logged in, explore the app through the menu on the left. </h1>
     </v-card>
   </div>
@@ -35,10 +35,8 @@ export default {
       authData: {
         email: "",
         password: "",
-        error: "",
-        success: ""
       },
-    };
+    }
   },
   methods: {
     async login() {
