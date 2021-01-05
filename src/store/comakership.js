@@ -3,9 +3,10 @@ import axios from '../axios-auth'
 export const comakershipStore = {
     state: () => ({
         comakerships: [],
-        comakership: { },
-        comakershipComplete: { },
-        comakershipToEdit: { },        
+        comakership: {},
+        comakershipComplete: {},
+        comakershipToEdit: {},
+        programs: [],
     }),
     mutations: {
         setComakerships(state, comakerships){
@@ -19,6 +20,9 @@ export const comakershipStore = {
         },
         setComakershipToEdit(state, comakershipToEdit){
             state.comakershipToEdit = comakershipToEdit
+        },
+        setPrograms(state, programs){
+            state.programs = programs
         }
     },
     actions: {
@@ -42,13 +46,12 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        postComakership(postData){
+        postComakership({dispatch}, postData){
             axios
-                .post("/api/Comakerships", postData)
+                .post("/api/comakerships", postData)
                 .then((response) => {
                     console.log(response.data);
-                    this.$refs.form.reset();
-                    this.$emit("update");
+                    dispatch('getAllComakerships');
                 })
                 .catch((error) => {
                     this.error = error;
@@ -64,7 +67,6 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        // eslint-disable-next-line no-empty-pattern
         putComakership({dispatch},putData){
             axios               
                 .put(`/api/comakerships/${putData.urlId}`, {
@@ -82,8 +84,17 @@ export const comakershipStore = {
                 .catch((error) => {
                     this.error = error;
                 });
-        }
-        
+        },
+        getAllPrograms({commit}){
+            axios
+                .get("/api/programs")
+                .then((response) => {
+                    commit('setPrograms', response.data);
+                })
+                .catch((error) => {
+                    this.error = error;
+                });
+        }        
     },
     getters: {
         comakerships(state){
@@ -97,6 +108,9 @@ export const comakershipStore = {
         },
         comakershipToEdit(state){
             return state.comakershipToEdit;
+        },
+        programs(state){
+            return state.programs;
         }
     }
 }

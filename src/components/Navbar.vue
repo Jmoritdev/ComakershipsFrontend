@@ -10,10 +10,11 @@
           <v-list-item-content>
             <v-list-item-title class="title">
               <!-- make username -->
-              {{ $store.state.user.username || "Please login" }}
+              {{ $store.state.user.name || "Please login" }}
             </v-list-item-title>
             <!-- make companyName -->
             <v-list-item-subtitle>{{ $store.state.company.name || "to use this app"}}</v-list-item-subtitle>
+            <v-list-item-subtitle>{{ $store.state.user.email || "" }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>

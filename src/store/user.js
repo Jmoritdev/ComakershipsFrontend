@@ -8,7 +8,6 @@ export const userStore = {
         userType: null,
         name: "",
         email: "null",
-        companyId: null,
     }),
     mutations: {
         authUser(state, userData) {
@@ -17,9 +16,8 @@ export const userStore = {
             state.userType = userData.UserType;
         },
         setUser(state, userData) {
-            state.name = userData.Name;
-            state.email = userData.Email;
-            state.companyId = userData.CompanyId;
+            state.name = userData.name;
+            state.email = userData.email;
         }
     },
     actions: {
@@ -39,7 +37,6 @@ export const userStore = {
                     return true;
                 })
                 .then((response) => {
-                    // console.log(this.state.user.name)
                     if (response === true) {
                         router.push({name: 'Company'});
                     }
@@ -52,29 +49,28 @@ export const userStore = {
         },
 
         getUser({commit}, id) {
-            if (id.isInteger) {
-                axios
-                    .get("api/CompanyUser/" + id)
-                    .then((response) => {
-                        console.log(response.data);
-                        commit('setUser', response.data);
-                    })
-                    .catch((error) => {
-                        this.error = error;
-                        alert("something went wrong while getting userdata");
+            axios
+                .get("api/CompanyUser/" + id)
+                .then((response) => {
+                    console.log(response.data);
+                    commit('setUser', {
+                        name: response.data.name,
+                        email: response.data.email
                     });
-            }
+                    commit('setCompanyDetails', response.data.company)
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("something went wrong while getting userdata");
+                });
         }
     },
     getters: {
         isAuthenticated(state) {
-            return state.token != null;
+            return state.token !== null;
         },
         userId(state) {
             return state.userId;
-        },
-        userType(state) {
-            return state.userType;
         },
         name(state) {
             return state.name;
@@ -82,8 +78,5 @@ export const userStore = {
         email(state) {
             return state.email;
         },
-        companyId(state) {
-            return state.companyId;
-        }
     },
 }
