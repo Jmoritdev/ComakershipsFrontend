@@ -1,7 +1,6 @@
 <template>
   <div>
-    <div v-if="$store.state.isAuthenticated === false">
-      <v-card ref="form">
+      <v-card v-if="$store.state.user.token === null" ref="form">
         <v-card-text>
           <v-alert v-if="authData.error" type="error">
             {{ authData.error }}
@@ -21,12 +20,10 @@
           <v-btn color="primary" @click="login"> Login</v-btn>
         </v-card-text>
       </v-card>
-    </div>
-    <div v-if="$store.state.isAuthenticated === true">
-      <v-card>
+
+      <v-card v-if="$store.state.user.token !== null">
         <h1> You are already logged in, explore the app through the menu on the left. </h1>
       </v-card>
-    </div>
   </div>
 </template>
 
@@ -47,6 +44,8 @@ export default {
       await this.$store.dispatch("login", this.authData);
     },
   },
+  computed: {
+  }
 };
 </script>
 

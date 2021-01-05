@@ -67,7 +67,7 @@ export const userStore = {
     },
     getters: {
         isAuthenticated(state) {
-            return state.token != null;
+            return state.token !== null;
         },
         userId(state) {
             return state.userId;
