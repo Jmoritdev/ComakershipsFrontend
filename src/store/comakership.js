@@ -22,7 +22,8 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        getComakershipCompleteById(id){
+        // eslint-disable-next-line no-empty-pattern
+        getComakershipCompleteById({}, id){
             axios
                 .get('/api/comakerships/'+id+'/complete')
                 .then((response) => {
@@ -54,7 +55,8 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        putComakership(id, putData){
+        // eslint-disable-next-line no-empty-pattern
+        putComakership({}, id, putData){
             axios
                 .put("/api/Comakerships/"+id, putData)
                 .then((response) => {
