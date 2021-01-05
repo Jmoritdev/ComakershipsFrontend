@@ -19,7 +19,7 @@ export const userStore = {
             state.name = userData.name;
             state.email = userData.email;
         },
-        resetState(state) {
+        resetUserState(state) {
             state.token = null;
             state.userId = null;
             state.userType = null;
@@ -29,7 +29,6 @@ export const userStore = {
     },
     actions: {
         login({commit}, authData) {
-
             axios
                 .post("api/login", {
                     email: authData.email,
@@ -54,10 +53,24 @@ export const userStore = {
                 });
 
         },
+        // eslint-disable-next-line no-empty-pattern
+        register({}, newUserData) {
+            axios
+                .post('api/company', newUserData)
+                .then((response) => {
+                    console.log(response.data)
+                    alert(response.data);
+                }).catch((error) => {
+                this.error = error;
+            })
+        },
 
         logout({commit}) {
-            commit('resetState');
-            router.push({ name: 'Home'});
+            commit('resetUserState');
+            commit('resetCompanyState');
+            commit('resetEmployeeState');
+            commit('resetComakershipState');
+            router.push({name: 'Home'});
         },
 
         getUser({commit}, id) {
@@ -76,6 +89,7 @@ export const userStore = {
                     alert("something went wrong while getting userdata");
                 });
         }
+
     },
     getters: {
         isAuthenticated(state) {

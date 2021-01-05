@@ -19,6 +19,44 @@
           ></v-text-field>
           <v-btn color="primary" @click="login"> Login</v-btn>
         </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-text-field
+              v-model="registerData.name"
+              label="CompanyName"
+          ></v-text-field>
+          <v-text-field
+              v-model="registerData.description"
+              label="Description"
+          ></v-text-field>
+          <v-text-field
+              v-model="registerData.street"
+              label="Street"
+          ></v-text-field>
+          <v-text-field
+              v-model="registerData.city"
+              label="City"
+          ></v-text-field>
+          <v-text-field
+              v-model="registerData.zipcode"
+              label="Zipcode"
+          ></v-text-field>
+
+          <v-text-field
+              v-model="registerData.CompanyUser.name"
+              label="Name"
+          ></v-text-field>
+          <v-text-field
+              v-model="registerData.CompanyUser.email"
+              label="Email"
+          ></v-text-field>
+          <v-text-field
+              v-model="registerData.CompanyUser.password"
+              type="Password"
+              label="Password"
+          ></v-text-field>
+          <v-btn color="primary" @click="register"> Register </v-btn>
+        </v-card-text>
       </v-card>
 
       <v-card v-if="$store.state.user.token !== null">
@@ -37,12 +75,28 @@ export default {
         email: "",
         password: "",
       },
+      registerData: {
+        name: "",
+        description: "",
+        street: "",
+        city: "",
+        zipcode: "",
+        CompanyUser: {
+            name: "",
+            email: "",
+            password: ""
+        }
+      }
     }
   },
   methods: {
     async login() {
       await this.$store.dispatch("login", this.authData);
     },
+    async register() {
+      await this.$store.dispatch("register", this.registerData)
+      Object.assign(this.$data, this.$options.data())
+    }
   },
   computed: {
   }
