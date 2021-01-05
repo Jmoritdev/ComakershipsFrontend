@@ -7,8 +7,14 @@ export const comakershipStore = {
         comakershipToEdit: { },        
     }),
     mutations: {
-        setComakership(state, comakerships){
+        setComakerships(state, comakerships){
             state.comakerships = comakerships
+        },
+        setComakership(state, comakership){
+            state.comakership = comakership
+        },
+        setComakershipToEdit(state, comakershipToEdit){
+            state.comakershipToEdit = comakershipToEdit
         }
     },
     actions: {
@@ -16,17 +22,18 @@ export const comakershipStore = {
             axios
                 .get("/api/comakerships")
                 .then((response) => {
-                    commit('setComakership', response.data);
+                    commit('setComakerships', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        getComakershipCompleteById(id){
+        getComakershipCompleteById({commit}, id){
             axios
                 .get('/api/comakerships/'+id+'/complete')
                 .then((response) => {
-                    this.comakership = response.data;
+                    commit('setComakership', response.data);
+                    // this.comakership = response.data;
                 })
                 .catch((error) => {
                     this.error = error;
@@ -44,11 +51,12 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        loadComakershipToEdit(id){
+        loadComakershipToEdit({commit}, id){
             axios
                 .get("/api/comakerships/" + id)
                 .then((response) => {
-                    this.comakershipToEdit = response.data;
+                    commit('setComakershipToEdit', response.data);
+                    // this.comakershipToEdit = response.data;
                 })
                 .catch((error) => {
                     this.error = error;
@@ -56,21 +64,36 @@ export const comakershipStore = {
         },
         putComakership(id, putData){
             axios
-                .put("/api/Comakerships/"+id, putData)
-                .then((response) => {
-                    console.log(response.data);
-                    this.id = "";
-                    this.$refs.form.reset();
-                    this.$emit("update");
+                .put("/api/comakerships/" + id, {
+                    id: putData.id,
+                    name: putData.name,
+                    description: putData.description,
+                    credits: putData.credits,
+                    bonus: putData.bonus,
+                    comakershipStatusId: putData.comakershipStatusId
                 })
-                .catch((error) => {
-                    this.error = error;
-                });
+                // .then((response) => {
+                //     console.log(response.data);
+                //     console.log(putData);
+                //     //this.id = "";
+                //     //this.$refs.form.reset();
+                //     //this.$emit("update");
+                // })
+                // .catch((error) => {
+                //     this.error = error;
+                // });
         }
+        
     },
     getters: {
         comakerships(state){
             return state.comakerships;
+        },
+        comakership(state){
+            return state.comakership;
+        },
+        comakershipToEdit(state){
+            return state.comakershipToEdit;
         }
     }
 }

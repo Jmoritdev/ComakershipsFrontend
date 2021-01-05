@@ -45,55 +45,59 @@
 </template>
 
 <script>
-import axios from "../../axios-auth";
+//import axios from "../../axios-auth";
 
 export default {
   data() {
     return {
-      id: null,
-      name: null,
-      description: null,
-      credits: false,
-      bonus: false,
-      comakershipStatusId: null,
-      comakership: {},
-      status: null,
-      statusoptions: [
-          { id: 1, name: 'Not started'},
-          { id: 2, name: 'Started'},
-          { id: 3, name: 'Completed'},
-      ],
+        id: null,        
+        statusoptions: [
+            { id: 1, name: 'Not started'},
+            { id: 2, name: 'Started'},
+            { id: 3, name: 'Completed'},
+        ],       
     };
+  },
+  computed: {
+    comakership(){
+        return this.$store.state.comakerships.comakershipToEdit;
+    },      
   },
   methods: {
     loadData() {
-      axios
-        .get("/api/comakerships/" + this.id)
-        .then((response) => {
-          this.comakership = response.data;
-        })
-        .catch((error) => console.log(error));
+        this.$store.dispatch("loadComakershipToEdit", this.id);
     },
     updateComakership() {
-      const putData = {
-        Id: this.comakership.id,
-        Name: this.comakership.name,
-        Description: this.comakership.description,
-        Credits: this.comakership.credits,
-        Bonus: this.comakership.bonus,
-        ComakershipStatusId: this.comakership.status.id
-      };
-      console.log(putData);
-      axios
-        .put("/api/Comakerships/" + this.id, putData)
-        .then((res) => {
-          console.log(res.data);
-          this.id = "";
-          this.$refs.form.reset();
-          this.$emit("update");
-        })
-        .catch((error) => console.log(error.response.request._response));
+        const putData = {
+            id: this.comakership.id,
+            name: this.comakership.name,
+            description: this.comakership.description,
+            credits: this.comakership.credits,
+            bonus: this.comakership.bonus,
+            comakershipStatusId: this.comakership.status.id
+        };
+        this.$store.dispatch("putComakership", this.id, putData);
     },
+    // updateComakership() {
+    //   const putData = {
+    //     Id: this.comakership.id,
+    //     Name: this.comakership.name,
+    //     Description: this.comakership.description,
+    //     Credits: this.comakership.credits,
+    //     Bonus: this.comakership.bonus,
+    //     ComakershipStatusId: this.comakership.status.id
+    //   };
+    //   console.log(putData);
+    //   axios
+    //     .put("/api/Comakerships/" + this.id, putData)
+    //     .then((res) => {
+    //       console.log(res.data);
+    //       this.id = "";
+    //       this.$refs.form.reset();
+    //       this.$emit("update");
+    //     })
+    //     .catch((error) => console.log(error.response.request._response));
+    // },
   },
   mounted() {
 
