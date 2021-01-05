@@ -25,9 +25,14 @@
       >
         <v-list-item
             v-for="(route, index) in $router.options.routes"
-            :key="index" >
-            <!-- :disabled="!$store.state.user.isAuthenticated" -->
+            :key="index"
+            :disabled="$store.state.user.token === null && route.name !== 'Home'" >
           <router-link :to="{ name: route.name }"> {{ route.name }}</router-link>
+        </v-list-item>
+        <v-list-item
+            v-if="$store.state.user.token !== null"
+        >
+          <a @click="logout()"> <u>Logout</u> </a>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -38,6 +43,11 @@
 
 export default {
   name: "NavBar",
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+    }
+  }
 }
 </script>
 
