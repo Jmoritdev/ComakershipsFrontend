@@ -36,7 +36,7 @@ export const comakershipStore = {
                     this.error = error;
                 });
         },
-        getComakershipCompleteById({commit}, id){
+        getComakershipComplete({commit}, id){
             axios
                 .get('/api/comakerships/'+id+'/complete')
                 .then((response) => {
