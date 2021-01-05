@@ -4,6 +4,7 @@ export const comakershipStore = {
     state: () => ({
         comakerships: [],
         comakership: { },
+        comakershipComplete: { },
         comakershipToEdit: { },        
     }),
     mutations: {
@@ -12,6 +13,9 @@ export const comakershipStore = {
         },
         setComakership(state, comakership){
             state.comakership = comakership
+        },
+        setComakershipComplete(state, comakershipComplete){
+            state.comakershipComplete = comakershipComplete
         },
         setComakershipToEdit(state, comakershipToEdit){
             state.comakershipToEdit = comakershipToEdit
@@ -32,8 +36,7 @@ export const comakershipStore = {
             axios
                 .get('/api/comakerships/'+id+'/complete')
                 .then((response) => {
-                    commit('setComakership', response.data);
-                    // this.comakership = response.data;
+                    commit('setComakershipComplete', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
@@ -88,6 +91,9 @@ export const comakershipStore = {
         },
         comakership(state){
             return state.comakership;
+        },
+        comakershipComplete(state){
+            return state.comakershipComplete;
         },
         comakershipToEdit(state){
             return state.comakershipToEdit;
