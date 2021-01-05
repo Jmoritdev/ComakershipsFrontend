@@ -12,26 +12,21 @@ export const companyStore = {
         logo: ""
     }),
     mutations: {
-        setCompanyId(state, companyId) {
-            state.companyId = companyId;
-        },
         setCompanyDetails(state, companyData) {
-            state.name = companyData.Name;
-            state.description = companyData.Description;
-            state.registrationDate = companyData.RegistrationDate;
-            state.street = companyData.Street;
-            state.city = companyData.City;
-            state.zipcode = companyData.Zipcode;
-            state.logo = companyData.Logo;
+            state.companyId = companyData.id;
+            state.name = companyData.name;
+            state.description = companyData.description;
+            state.registrationDate = companyData.registrationDate;
+            state.street = companyData.street;
+            state.city = companyData.city;
+            state.zipcode = companyData.zipcode;
+            state.logo = companyData.logo;
         }
     },
     actions: {
         getCompany({commit}) {
-
-            commit('setCompanyId', this.$store.state.user.companyId)
-
             axios
-                .get('api/company/' + this.state.companyId)
+                .get('api/company/' + this.state.company.companyId)
                 .then((response) => {
                     console.log(response.data);
                     commit('setCompanyDetails', response.data);

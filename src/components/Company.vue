@@ -6,13 +6,21 @@
 </template>
 
 <script>
+
 export default {
   name: "Company",
+  data() {
+    return {};
+  },
   mounted() {
-    this.$store.dispatch('getUser', this.$store.state.user.userId);
-    console.log(this.$store.state.user.name);
-    this.$store.dispatch('getCompany');
-    console.log(this.$store.state.company.name())
+    this.loadData();
+  },
+  methods: {
+    async loadData(){
+      await this.$store.dispatch('getUser', this.$store.state.user.userId);
+    }
+  },
+  computed: {
   }
 }
 </script>
