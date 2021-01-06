@@ -9,7 +9,8 @@ export const companyStore = {
         street: "",
         city: "",
         zipcode: "",
-        logo: ""
+        logo: "",
+        reviews: [],
     }),
     mutations: {
         setCompanyDetails(state, companyData) {
@@ -37,8 +38,5 @@ export const companyStore = {
         }
     },
     getters: {
-        name(state) {
-            return state.name;
-        }
     }
 }

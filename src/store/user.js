@@ -95,14 +95,14 @@ export const userStore = {
         isAuthenticated(state) {
             return state.token !== null;
         },
-        userId(state) {
-            return state.userId;
-        },
-        name(state) {
-            return state.name;
-        },
-        email(state) {
-            return state.email;
-        },
+        // userId(state) {
+        //     return state.userId;
+        // },
+        // name(state) {
+        //     return state.name;
+        // },
+        // email(state) {
+        //     return state.email;
+        // },
     },
 }
