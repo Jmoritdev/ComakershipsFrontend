@@ -12,44 +12,48 @@
         </ul>
       </div>
       <!-- Edit buttons -->
-      <v-btn v-show="!passwordFormOpen" @click="toggleUserForm()" color="primary">
+      <v-btn v-show="!passwordFormOpen" @click="toggleUserForm()" class="my-4 mx-5" color="primary">
         {{ !userFormOpen ? "Edit details" : "Cancel" }}
       </v-btn>
-      <v-btn v-show="!userFormOpen" @click="togglePasswordForm()" color="primary">
+      <v-btn v-show="!userFormOpen" @click="togglePasswordForm()" class="my-4 mx-5" color="primary">
         {{ !passwordFormOpen ? "Edit password" : "Cancel" }}
       </v-btn>
       <!-- Edit user form -->
       <v-card v-show="userFormOpen" class="pa-5">
-        <v-text-field
-            v-model="personalData.name"
-            label="Name"
-        ></v-text-field>
-        <v-text-field
-            v-model="personalData.email"
-            label="Email"
-        ></v-text-field>
+        <v-card-text>
+          <v-text-field
+              v-model="personalData.name"
+              label="Name"
+          ></v-text-field>
+          <v-text-field
+              v-model="personalData.email"
+              label="Email"
+          ></v-text-field>
+        </v-card-text>
+        <v-btn @click="updateUserData()" class="my-4 mx-5" color="primary"> Confirm</v-btn>
       </v-card>
       <!-- Edit password form -->
       <v-card v-show="passwordFormOpen" class="pa-5">
-        <v-text-field
-            v-model="passData.OldPassword"
-            label="Current password"
-            type="password"
-        ></v-text-field>
-        <v-text-field
-            v-model="passData.NewPassword"
-            label="New password"
-            type="password"
-        ></v-text-field>
-        <v-text-field
-            v-model="passData.ConfirmNewPassword"
-            label="Confirm new password"
-            type="password"
-        ></v-text-field>
+        <v-card-text>
+          <v-text-field
+              v-model="passData.OldPassword"
+              label="Current password"
+              type="password"
+          ></v-text-field>
+          <v-text-field
+              v-model="passData.NewPassword"
+              label="New password"
+              type="password"
+          ></v-text-field>
+          <v-text-field
+              v-model="passData.ConfirmNewPassword"
+              label="Confirm new password"
+              type="password"
+          ></v-text-field>
+        </v-card-text>
+
+        <v-btn @click="updatePassword()" class="my-4 mx-5" color="primary"> Confirm</v-btn>
       </v-card>
-      <!-- Confirm buttons -->
-      <v-btn v-show="userFormOpen" @click="updateUserData()" color="primary"> Confirm</v-btn>
-      <v-btn v-show="passwordFormOpen" @click="updatePassword()" color="primary"> Confirm</v-btn>
     </v-container>
   </div>
 </template>
