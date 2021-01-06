@@ -4,7 +4,7 @@
 			<h2>List of Comakerships</h2>
 			<v-data-table
 			:headers="headers"
-			:items="$store.state.comakerships.comakerships"
+			:items="comakerships"
 			:items-per-page="15"
 			class="elevation-1"
 			></v-data-table>
@@ -56,7 +56,12 @@ computed: {
 },
 methods:{
 	loadData(){
-		this.$store.dispatch("getAllComakerships");
+        if(this.userType === 'StudentUser'){
+            this.$store.dispatch("getAllComakerships");
+        }
+        if(this.userType === 'CompanyUser'){
+            this.$store.dispatch("getComakershipsForUser");
+        }		
 	}
 },
 mounted() {
