@@ -51,7 +51,7 @@ export const comakershipStore = {
                 .post("/api/comakerships", postData)
                 .then((response) => {
                     console.log(response.data);
-                    dispatch('getAllComakerships');
+                    dispatch('getComakershipsForUser');
                 })
                 .catch((error) => {
                     this.error = error;
@@ -79,7 +79,7 @@ export const comakershipStore = {
                 })
                 .then((response) => {
                     console.log(response.data);
-                    dispatch('getAllComakerships');
+                    dispatch('getComakershipsForUser');
                 })
                 .catch((error) => {
                     this.error = error;
@@ -94,7 +94,17 @@ export const comakershipStore = {
                 .catch((error) => {
                     this.error = error;
                 });
-        }        
+        },
+        getComakershipsForUser({commit}){
+            axios
+                .get("/api/comakerships/loggedinuser/all")
+                .then((response) => {
+                    commit('setComakerships', response.data);
+                })
+                .catch((error) => {
+                    this.error = error;
+                })
+        }
     },
     getters: {
         comakerships(state){
