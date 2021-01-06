@@ -3,12 +3,33 @@ import axios from '../axios-auth'
 export const comakershipStore = {
     state: () => ({
         comakerships: [],
-        comakership: { },
-        comakershipToEdit: { },        
+        comakership: {},
+        comakershipComplete: {},
+        comakershipToEdit: {},
+        programs: [],
     }),
     mutations: {
-        setComakership(state, comakerships){
+        setComakerships(state, comakerships){
             state.comakerships = comakerships
+        },
+        setComakership(state, comakership){
+            state.comakership = comakership
+        },
+        setComakershipComplete(state, comakershipComplete){
+            state.comakershipComplete = comakershipComplete
+        },
+        setComakershipToEdit(state, comakershipToEdit){
+            state.comakershipToEdit = comakershipToEdit
+        },
+        setPrograms(state, programs){
+            state.programs = programs
+        },
+        resetComakershipState(state){
+            state.comakerships = [];
+            state.comakership = {};
+            state.comakershipComplete = {};
+            state.comakershipToEdit = {};
+            state.programs = [];
         }
     },
     actions: {
@@ -16,61 +37,97 @@ export const comakershipStore = {
             axios
                 .get("/api/comakerships")
                 .then((response) => {
-                    commit('setComakership', response.data);
+                    commit('setComakerships', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        getComakershipCompleteById(id){
+        getComakershipComplete({commit}, id){
             axios
                 .get('/api/comakerships/'+id+'/complete')
                 .then((response) => {
-                    this.comakership = response.data;
+                    commit('setComakershipComplete', response.data);
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        postComakership(postData){
+        postComakership({dispatch}, postData){
             axios
-                .post("/api/Comakerships", postData)
+                .post("/api/comakerships", postData)
                 .then((response) => {
                     console.log(response.data);
-                    this.$refs.form.reset();
-                    this.$emit("update");
+                    dispatch('getComakershipsForUser');
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        loadComakershipToEdit(id){
+        loadComakershipToEdit({commit}, id){
             axios
                 .get("/api/comakerships/" + id)
                 .then((response) => {
-                    this.comakershipToEdit = response.data;
+                    commit('setComakershipToEdit', response.data);                    
                 })
                 .catch((error) => {
                     this.error = error;
                 });
         },
-        putComakership(id, putData){
-            axios
-                .put("/api/Comakerships/"+id, putData)
+        putComakership({dispatch},putData){
+            axios               
+                .put(`/api/comakerships/${putData.urlId}`, {
+                    id: putData.id,
+                    name: putData.name,
+                    description: putData.description,
+                    credits: putData.credits,
+                    bonus: putData.bonus,
+                    comakershipStatusId: putData.comakershipStatusId
+                })
                 .then((response) => {
                     console.log(response.data);
-                    this.id = "";
-                    this.$refs.form.reset();
-                    this.$emit("update");
+                    dispatch('getComakershipsForUser');
                 })
                 .catch((error) => {
                     this.error = error;
                 });
+        },
+        getAllPrograms({commit}){
+            axios
+                .get("/api/programs")
+                .then((response) => {
+                    commit('setPrograms', response.data);
+                })
+                .catch((error) => {
+                    this.error = error;
+                });
+        },
+        getComakershipsForUser({commit}){
+            axios
+                .get("/api/comakerships/loggedinuser/all")
+                .then((response) => {
+                    commit('setComakerships', response.data);
+                })
+                .catch((error) => {
+                    this.error = error;
+                })
         }
     },
     getters: {
         comakerships(state){
             return state.comakerships;
+        },
+        comakership(state){
+            return state.comakership;
+        },
+        comakershipComplete(state){
+            return state.comakershipComplete;
+        },
+        comakershipToEdit(state){
+            return state.comakershipToEdit;
+        },
+        programs(state){
+            return state.programs;
         }
     }
 }
