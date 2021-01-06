@@ -3,7 +3,7 @@
     <v-navigation-drawer
         app
         permanent
-        expand-on-hover
+        class="col-2"
     >
       <v-list>
         <v-list-item>
