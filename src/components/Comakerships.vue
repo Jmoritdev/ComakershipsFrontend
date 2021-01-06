@@ -10,15 +10,15 @@
 			></v-data-table>
 		</v-container>
 
-		<v-container class="my-4">
+		<v-container class="my-4" v-if="userType === 'StudentUser'">
 			<comakership />
 		</v-container>
 		
-		<v-container class="my-4">
+		<v-container class="my-4" v-if="userType === 'CompanyUser'">
 			<comakership-put />
 		</v-container>
 
-		<v-container class="my-4">
+		<v-container class="my-4" v-if="userType === 'CompanyUser'">
 			<comakership-post />
 		</v-container>
 	</div>
@@ -36,6 +36,9 @@ data() {
 	return {};
 },
 computed: {
+    userType(){
+        return this.$store.state.user.userType;
+    },
 	comakerships(){
 		return this.$store.state.comakerships.comakerships;
 	},

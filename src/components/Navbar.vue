@@ -23,10 +23,10 @@
           nav
           dense
       >
-        <v-list-item
+        <v-list-item v-show="$store.state.user.userType === 'CompanyUser' || $store.state.user.userType === 'StudentUser' && route.name === 'Home' || route.name == 'Comakerships'" 
             v-for="(route, index) in $router.options.routes"
             :key="index"
-            :disabled="$store.state.user.token === null && route.name !== 'Home'" >
+            :disabled="($store.state.user.token === null && route.name !== 'Home')" >
           <router-link :to="{ name: route.name }"> {{ route.name }}</router-link>
         </v-list-item>
         <v-list-item
