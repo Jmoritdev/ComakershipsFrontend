@@ -35,16 +35,13 @@ export const userStore = {
                     password: authData.password,
                 })
                 .then((res) => {
-                    if (res.data.UserType === "StudentUser") {
-                        return false;
-                    }
                     commit('authUser', res.data);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.Token;
-                    return true;
-                })
-                .then((response) => {
-                    if (response === true) {
+                    if (res.data.UserType === "CompanyUser") {
                         router.push({name: 'Company'});
+                    }
+                    if (res.data.UserType === "StudentUser") {
+                        router.push({name: 'Comakerships'});
                     }
                 })
                 .catch((error) => {
@@ -95,5 +92,8 @@ export const userStore = {
         isAuthenticated(state) {
             return state.token !== null;
         },
+        userType(state) {
+            return state.userType;
+        }
     },
 }
