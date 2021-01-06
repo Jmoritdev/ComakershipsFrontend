@@ -131,7 +131,7 @@ export const userStore = {
                 });
         },
 
-        getCompanyUser({commit}, id) {
+        getCompanyUser({commit, dispatch}, id) {
             axios
                 .get("api/CompanyUser/" + id)
                 .then((response) => {
@@ -141,11 +141,25 @@ export const userStore = {
                         reviews: null,
                     });
                     commit('setCompanyDetails', response.data.company)
+                    dispatch('getEmployees', response.data.company.id)
                 })
                 .catch((error) => {
                     this.error = error;
                     alert("something went wrong while getting userdata");
                 });
+        },
+
+        // eslint-disable-next-line no-empty-pattern
+        changePassword({}, passwordData) {
+            axios
+                .post('api/User/ChangePassword', passwordData)
+                .then(() => {
+                    alert("password has been changed")
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, please try again later");
+                })
         }
 
     },

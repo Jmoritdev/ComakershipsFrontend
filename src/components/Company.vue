@@ -84,7 +84,6 @@ export default {
   methods: {
     async loadData() {
       await this.$store.dispatch('getCompanyUser', this.$store.state.user.userId);
-      await this.$store.dispatch('getEmployees', this.$store.state.company.companyId);
     },
     loadCompanyToEdit() {
       this.companyToEdit = {
