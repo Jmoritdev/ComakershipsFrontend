@@ -5,10 +5,10 @@
       <!-- Detail data -->
       <div class="d-flex justify-start">
         <ul>
-          <v-list-item v-for="(value, name, index) in personalData" :key="index"> {{ name }}</v-list-item>
+          <v-list-item v-for="(value, name, index) in user" :key="index"> {{ name }}</v-list-item>
         </ul>
         <ul>
-          <v-list-item v-for="(value, name, index) in personalData" :key="index"> {{ value.toString() }}</v-list-item>
+          <v-list-item v-for="(value, name, index) in user" :key="index"> {{ value.toString() }}</v-list-item>
         </ul>
       </div>
       <!-- Edit buttons -->
@@ -73,18 +73,47 @@ export default {
       passwordFormOpen: false,
     }
   },
+  mounted() {
+    this.onLoad();
+  },
   methods: {
+    async onLoad() {
+      if (this.$store.state.user.userType === "StudentUser") {
+        await this.$store.dispatch('getStudentUser', this.$store.state.user.userId);
+      }
+    },
+    loadPersonalData() {
+      this.personalData = {
+        name: this.user.name,
+        email: this.user.email,
+        type: this.user.type,
+      }
+    },
     async updateUserData() {
+      this.toggleUserForm();
       await this.$store.dispatch('putUser', this.personalData)
     },
     async updatePassword() {
+      this.togglePasswordForm();
       await this.$store.dispatch('changePassword', this.passData)
     },
     toggleUserForm() {
+      if (this.userFormOpen) {
+        this.loadPersonalData();
+      }
       this.userFormOpen ^= true;
     },
     togglePasswordForm() {
       this.passwordFormOpen ^= true;
+    }
+  },
+  computed: {
+    user: function () {
+      return {
+        name: this.$store.state.user.name,
+        email: this.$store.state.user.email,
+        type: this.$store.state.user.userType,
+      }
     }
   }
 }

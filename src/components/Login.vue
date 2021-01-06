@@ -65,7 +65,6 @@
             label="Password"
             type="Password"
         ></v-text-field>
-        <v-btn color="primary" @click="register"> Register</v-btn>
       </v-card-text>
       <!-- Student form -->
       <v-card-text v-show="registerStudent">
@@ -98,6 +97,7 @@
             label="Nickname"
         ></v-text-field>
       </v-card-text>
+      <v-btn color="primary" @click="register"> Register</v-btn>
     </v-card>
     <!-- Edit user form -->
     <v-card v-if="$store.state.user.token !== null">
@@ -151,7 +151,7 @@ export default {
     },
     async register() {
       if (this.registerStudent) {
-        await this.$store.dispatch("registerStudent", this.registerCompanyData.CompanyUser)
+        await this.$store.dispatch("registerStudent", this.registerStudentData)
       } else {
         await this.$store.dispatch("register", this.registerCompanyData)
       }

@@ -40,7 +40,6 @@ export const userStore = {
             axios
                 .get('api/programs')
                 .then((resp) => {
-                    console.log(resp.data);
                     commit('setPrograms', resp.data);
                 })
                 .catch((error) => {
@@ -76,7 +75,6 @@ export const userStore = {
             axios
                 .post('api/company', newUserData)
                 .then((response) => {
-                    console.log(response.data)
                     alert(response.data);
                 }).catch((error) => {
                 this.error = error;
@@ -86,9 +84,8 @@ export const userStore = {
         // eslint-disable-next-line no-empty-pattern
         registerStudent({}, studentData) {
             axios
-                .post('api/students', studentData)
-                .then((resp) => {
-                    console.log(resp.data);
+                .post('api/Students', studentData)
+                .then(() => {
                     alert("successfully registered");
                 })
                 .catch((error) => {
@@ -105,15 +102,43 @@ export const userStore = {
             router.push({name: 'Home'});
         },
 
-        getUser({commit}, id) {
+        putUser({commit}, userData) {
             axios
-                .get("api/CompanyUser/" + id)
+                .put(`api/CompanyUser`, userData)
+                .then(() => {
+                    commit('setUser', userData);
+                    alert("Your details have been updated");
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, try again later");
+                })
+        },
+
+        getStudentUser({commit}, id) {
+            axios
+                .get("api/Students/" + id)
                 .then((response) => {
-                    console.log(response.data);
                     commit('setUser', {
                         name: response.data.name,
                         email: response.data.email,
-                        reviews: response.data.reviews || null,
+                        reviews: response.data.reviews,
+                    });
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("something went wrong while getting userdata");
+                });
+        },
+
+        getCompanyUser({commit}, id) {
+            axios
+                .get("api/CompanyUser/" + id)
+                .then((response) => {
+                    commit('setUser', {
+                        name: response.data.name,
+                        email: response.data.email,
+                        reviews: null,
                     });
                     commit('setCompanyDetails', response.data.company)
                 })

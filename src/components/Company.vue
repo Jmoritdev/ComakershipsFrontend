@@ -42,7 +42,7 @@
             v-model="companyToEdit.description"
             label="Description"
         ></v-textarea>
-        <v-btn color="primary" @click="updateCompany()"> Confirm </v-btn>
+        <v-btn color="primary" @click="updateCompany()"> Confirm</v-btn>
       </v-card-text>
     </v-card>
     <!-- Update logo -->
@@ -70,13 +70,7 @@ export default {
     return {
       logoFormOpen: false,
       companyFormOpen: false,
-      companyToEdit: {
-        name: this.$store.state.company.name,
-        street: this.$store.state.company.street,
-        city: this.$store.state.company.city,
-        zipcode: this.$store.state.company.zipcode,
-        description: this.$store.state.company.description,
-      },
+      companyToEdit: {},
       headers: [
         {text: "Id", value: "id"},
         {text: "Name", value: "name"},
@@ -89,16 +83,28 @@ export default {
   },
   methods: {
     async loadData() {
-      await this.$store.dispatch('getUser', this.$store.state.user.userId);
+      await this.$store.dispatch('getCompanyUser', this.$store.state.user.userId);
       await this.$store.dispatch('getEmployees', this.$store.state.company.companyId);
     },
+    loadCompanyToEdit() {
+      this.companyToEdit = {
+        name: this.company.name,
+        street: this.company.street,
+        city: this.company.city,
+        zipcode: this.company.zipcode,
+        description: this.company.description,
+      }
+    },
     async updateCompany() {
-      this.toggleCompanyForm();
       await this.$store.dispatch('updateCompany', this.companyToEdit);
+      this.toggleCompanyForm();
     },
     toggleCompanyForm() {
       if (this.logoFormOpen) {
         this.logoFormOpen = false;
+      }
+      if (!this.companyFormOpen) {
+        this.loadCompanyToEdit()
       }
       this.companyFormOpen ^= true;
     },

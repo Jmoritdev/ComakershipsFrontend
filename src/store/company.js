@@ -27,7 +27,9 @@ export const companyStore = {
             }
         },
         updateState(state, newData) {
-            state.name = newData.name;
+            if (newData.name) {
+                state.name = newData.name;
+            }
             state.street = newData.street;
             state.city = newData.city;
             state.zipcode = newData.zipcode;

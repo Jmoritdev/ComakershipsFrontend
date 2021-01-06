@@ -3,8 +3,6 @@ import axios from "../axios-auth";
 export const employeesStore = {
     state: () => ({
         employees: [],
-        employeeToEdit: {},
-        employeeToDelete: {},
     }),
     mutations: {
         setEmployees(state, employees) {

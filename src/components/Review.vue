@@ -9,13 +9,16 @@
           :items-per-page="15"
           class="elevation-1"
       ></v-data-table>
-      <v-btn color="primary" @click="toggleReviewForm()"> {{ !reviewFormOpen ? "Write review" : "Cancel" }}</v-btn>
+      <v-btn color="primary" @click="toggleReviewForm()">
+        {{ !reviewFormOpen ? "Write review" : "Cancel" }}
+      </v-btn>
     </v-container>
     <!-- Write review -->
     <v-container class="my-4" v-show="reviewFormOpen">
       <v-text-field
           v-model="reviewToCreate.studentUserId"
           label="Student Id"
+          type="number"
       ></v-text-field>
       <v-select
           v-model="reviewToCreate.rating"
@@ -52,6 +55,11 @@ export default {
   },
   methods: {
     async createReview() {
+      if (this.reviewToCreate.studentUserId === "") {
+        alert("Student Id has to be a number")
+        return
+      }
+      this.reviewToCreate.studentUserId = parseInt(this.reviewToCreate.studentUserId)
       this.toggleReviewForm();
       await this.$store.dispatch('createReview', this.reviewToCreate);
     },
