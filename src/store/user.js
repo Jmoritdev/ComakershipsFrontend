@@ -8,8 +8,13 @@ export const userStore = {
         userType: null,
         name: "",
         email: "",
+        reviews: [],
+        programs: [],
     }),
     mutations: {
+        setPrograms(state, programs) {
+            state.programs = programs;
+        },
         authUser(state, userData) {
             state.token = userData.Token;
             state.userId = userData.UserId;
@@ -18,6 +23,9 @@ export const userStore = {
         setUser(state, userData) {
             state.name = userData.name;
             state.email = userData.email;
+            if (userData.reviews !== null) {
+                state.reviews = userData.reviews;
+            }
         },
         resetUserState(state) {
             state.token = null;
@@ -28,6 +36,18 @@ export const userStore = {
         }
     },
     actions: {
+        getPrograms({commit}) {
+            axios
+                .get('api/programs')
+                .then((resp) => {
+                    console.log(resp.data);
+                    commit('setPrograms', resp.data);
+                })
+                .catch((error) => {
+                    this.error = error;
+                })
+        },
+
         login({commit}, authData) {
             axios
                 .post("api/login", {
@@ -50,6 +70,7 @@ export const userStore = {
                 });
 
         },
+
         // eslint-disable-next-line no-empty-pattern
         register({}, newUserData) {
             axios
@@ -60,6 +81,20 @@ export const userStore = {
                 }).catch((error) => {
                 this.error = error;
             })
+        },
+
+        // eslint-disable-next-line no-empty-pattern
+        registerStudent({}, studentData) {
+            axios
+                .post('api/students', studentData)
+                .then((resp) => {
+                    console.log(resp.data);
+                    alert("successfully registered");
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, try again later");
+                })
         },
 
         logout({commit}) {
@@ -77,7 +112,8 @@ export const userStore = {
                     console.log(response.data);
                     commit('setUser', {
                         name: response.data.name,
-                        email: response.data.email
+                        email: response.data.email,
+                        reviews: response.data.reviews || null,
                     });
                     commit('setCompanyDetails', response.data.company)
                 })

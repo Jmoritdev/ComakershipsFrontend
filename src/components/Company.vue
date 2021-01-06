@@ -49,35 +49,15 @@
     <v-container class="my-4" v-show="logoFormOpen">
       <p> sorry not implemented yet </p>
     </v-container>
-
-    <!-- Reviews -->
+    <!-- Employees -->
     <v-container class="my-4">
-      <h2> Reviews</h2>
+      <h2>List of employees</h2>
       <v-data-table
-          :headers="reviewHeaders"
-          :items="$store.state.company.reviews"
+          :headers="headers"
+          :items="$store.state.employees.employees"
           :items-per-page="15"
           class="elevation-1"
       ></v-data-table>
-      <v-btn color="primary" @click="toggleReviewForm()"> {{ !reviewFormOpen ? "Write review" : "Cancel" }}</v-btn>
-    </v-container>
-    <!-- Write review -->
-    <v-container class="my-4" v-show="reviewFormOpen">
-      <v-text-field
-          v-model="reviewToCreate.studentUserId"
-          label="Student Id"
-      ></v-text-field>
-      <v-select
-          v-model="reviewToCreate.rating"
-          :items = [1,2,3,4,5,6,7,8,9,10]
-          label="Rating"
-      ></v-select>
-      <v-textarea
-          v-model="reviewToCreate.comment"
-          label="Comment"
-      ></v-textarea>
-
-      <v-btn color="primary" @click="createReview()"> Confirm </v-btn>
     </v-container>
   </div>
 </template>
@@ -88,14 +68,8 @@ export default {
   name: "Company",
   data() {
     return {
-      reviewHeaders: [
-        {text: "Reviewer", value: "reviewer"},
-        {text: "Rating", value: "rating"},
-        {text: "Comment", value: "comment"}
-      ],
       logoFormOpen: false,
       companyFormOpen: false,
-      reviewFormOpen: false,
       companyToEdit: {
         name: this.$store.state.company.name,
         street: this.$store.state.company.street,
@@ -103,11 +77,11 @@ export default {
         zipcode: this.$store.state.company.zipcode,
         description: this.$store.state.company.description,
       },
-      reviewToCreate: {
-        studentUserId: null,
-        rating: null,
-        comment: "",
-      },
+      headers: [
+        {text: "Id", value: "id"},
+        {text: "Name", value: "name"},
+        {text: "Email", value: "email"},
+      ],
     };
   },
   mounted() {
@@ -116,14 +90,11 @@ export default {
   methods: {
     async loadData() {
       await this.$store.dispatch('getUser', this.$store.state.user.userId);
+      await this.$store.dispatch('getEmployees', this.$store.state.company.companyId);
     },
     async updateCompany() {
       this.toggleCompanyForm();
       await this.$store.dispatch('updateCompany', this.companyToEdit);
-    },
-    async createReview() {
-      this.toggleReviewForm();
-      await this.$store.dispatch('createReview', this.reviewToCreate);
     },
     toggleCompanyForm() {
       if (this.logoFormOpen) {
@@ -136,9 +107,6 @@ export default {
         this.companyFormOpen = false;
       }
       this.logoFormOpen ^= true;
-    },
-    toggleReviewForm() {
-      this.reviewFormOpen ^= true;
     },
   },
   computed: {
