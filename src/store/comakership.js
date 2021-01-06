@@ -23,6 +23,13 @@ export const comakershipStore = {
         },
         setPrograms(state, programs){
             state.programs = programs
+        },
+        resetComakershipState(state){
+            state.comakerships = [];
+            state.comakership = {};
+            state.comakershipComplete = {};
+            state.comakershipToEdit = {};
+            state.programs = [];
         }
     },
     actions: {

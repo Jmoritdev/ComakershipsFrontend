@@ -33,6 +33,17 @@ export const companyStore = {
             state.zipcode = newData.zipcode;
             state.description = newData.description;
         },
+        resetCompanyState(state){
+            state.companyId = null;
+            state.name = "";
+            state.description = "";
+            state.registrationDate = null;
+            state.street = "";
+            state.city = "";
+            state.zipcode = "";
+            state.logo = "";
+            state.reviews = [];
+        }
     },
     actions: {
         updateCompany({commit}, companyData) {

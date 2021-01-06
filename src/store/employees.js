@@ -9,6 +9,11 @@ export const employeesStore = {
     mutations: {
         setEmployees(state, employees) {
             state.employees = employees;
+        },
+        resetEmployeeState(state){
+            state.employees = [];
+            state.employeeToEdit = {};
+            state.employeeToDelete = {};
         }
     },
     actions: {
@@ -22,7 +27,7 @@ export const employeesStore = {
                 .catch((error) => {
                     this.error = error;
                 })
-        }
+        }        
     },
     getters: {}
 }
