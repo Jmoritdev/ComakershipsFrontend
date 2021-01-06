@@ -22,21 +22,57 @@ export const companyStore = {
             state.city = companyData.city;
             state.zipcode = companyData.zipcode;
             state.logo = companyData.logo;
-        }
+            if(companyData.reviews !== null) {
+                state.reviews = companyData.reviews
+            }
+        },
+        updateState(state, newData) {
+            state.name = newData.name;
+            state.street = newData.street;
+            state.city = newData.city;
+            state.zipcode = newData.zipcode;
+            state.description = newData.description;
+        },
     },
     actions: {
-        getCompany({commit}) {
+        updateCompany({commit}, companyData) {
+
+            if(companyData.name === this.state.company.name) {
+                delete companyData.name;
+            }
+
             axios
-                .get('api/company/' + this.state.company.companyId)
+                .put(`api/company/${this.state.company.companyId}`, companyData)
+                .then((response) => {
+                    console.log(response);
+                    commit('updateState', companyData);
+                    alert("Company successfully updated");
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, try again later");
+                })
+
+        },
+        // eslint-disable-next-line no-empty-pattern
+        createReview({}, reviewData) {
+            axios
+                .post('api/review', {
+                    companyId: this.state.company.companyId,
+                    studentUserId: reviewData.studentUserId,
+                    rating: reviewData.rating,
+                    comment: reviewData.comment,
+                    forCompany: false,
+                })
                 .then((response) => {
                     console.log(response.data);
-                    commit('setCompanyDetails', response.data);
-                }).catch((error) => {
+                    alert("New review created")
+                })
+                .catch((error) => {
                     this.error = error;
-                    alert("Something went wrong while getting company data");
-            })
+                    alert("Could not create new review");
+                })
         }
     },
-    getters: {
-    }
+    getters: {}
 }

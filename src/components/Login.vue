@@ -1,6 +1,7 @@
 <template>
   <div class="d-flex justify-space-around">
       <v-card v-if="$store.state.user.token === null" ref="form">
+        <h4> Login </h4>
           <v-card-text>
             <v-alert v-if="authData.error" type="error">
               {{ authData.error }}
@@ -22,6 +23,7 @@
       </v-card>
 
     <v-card v-if="$store.state.user.token === null" ref="form">
+      <h4> Register </h4>
           <v-card-text>
             <v-text-field
                 v-model="registerData.name"
