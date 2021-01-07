@@ -8,8 +8,13 @@ export const userStore = {
         userType: null,
         name: "",
         email: "",
+        reviews: [],
+        programs: [],
     }),
     mutations: {
+        setPrograms(state, programs) {
+            state.programs = programs;
+        },
         authUser(state, userData) {
             state.token = userData.Token;
             state.userId = userData.UserId;
@@ -18,6 +23,9 @@ export const userStore = {
         setUser(state, userData) {
             state.name = userData.name;
             state.email = userData.email;
+            if (userData.reviews !== null) {
+                state.reviews = userData.reviews;
+            }
         },
         resetUserState(state) {
             state.token = null;
@@ -28,6 +36,17 @@ export const userStore = {
         }
     },
     actions: {
+        getPrograms({commit}) {
+            axios
+                .get('api/programs')
+                .then((resp) => {
+                    commit('setPrograms', resp.data);
+                })
+                .catch((error) => {
+                    this.error = error;
+                })
+        },
+
         login({commit}, authData) {
             axios
                 .post("api/login", {
@@ -50,16 +69,29 @@ export const userStore = {
                 });
 
         },
+
         // eslint-disable-next-line no-empty-pattern
         register({}, newUserData) {
             axios
                 .post('api/company', newUserData)
                 .then((response) => {
-                    console.log(response.data)
                     alert(response.data);
                 }).catch((error) => {
                 this.error = error;
             })
+        },
+
+        // eslint-disable-next-line no-empty-pattern
+        registerStudent({}, studentData) {
+            axios
+                .post('api/Students', studentData)
+                .then(() => {
+                    alert("successfully registered");
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, try again later");
+                })
         },
 
         logout({commit}) {
@@ -70,21 +102,64 @@ export const userStore = {
             router.push({name: 'Home'});
         },
 
-        getUser({commit}, id) {
+        putUser({commit}, userData) {
             axios
-                .get("api/CompanyUser/" + id)
+                .put(`api/CompanyUser`, userData)
+                .then(() => {
+                    commit('setUser', userData);
+                    alert("Your details have been updated");
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, try again later");
+                })
+        },
+
+        getStudentUser({commit}, id) {
+            axios
+                .get("api/Students/" + id)
                 .then((response) => {
-                    console.log(response.data);
                     commit('setUser', {
                         name: response.data.name,
-                        email: response.data.email
+                        email: response.data.email,
+                        reviews: response.data.reviews,
                     });
-                    commit('setCompanyDetails', response.data.company)
                 })
                 .catch((error) => {
                     this.error = error;
                     alert("something went wrong while getting userdata");
                 });
+        },
+
+        getCompanyUser({commit, dispatch}, id) {
+            axios
+                .get("api/CompanyUser/" + id)
+                .then((response) => {
+                    commit('setUser', {
+                        name: response.data.name,
+                        email: response.data.email,
+                        reviews: null,
+                    });
+                    commit('setCompanyDetails', response.data.company)
+                    dispatch('getEmployees', response.data.company.id)
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("something went wrong while getting userdata");
+                });
+        },
+
+        // eslint-disable-next-line no-empty-pattern
+        changePassword({}, passwordData) {
+            axios
+                .post('api/User/ChangePassword', passwordData)
+                .then(() => {
+                    alert("password has been changed")
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("Something went wrong, please try again later");
+                })
         }
 
     },
