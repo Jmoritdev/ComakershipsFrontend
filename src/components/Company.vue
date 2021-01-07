@@ -16,11 +16,11 @@
         </div>
       </div>
 
-      <v-btn color="primary" @click="toggleCompanyForm()"> {{ !companyFormOpen ? "Update company" : "Cancel" }}</v-btn>
-      <v-btn color="primary" @click="toggleLogoForm()"> {{ !logoFormOpen ? "Update logo" : "Cancel" }}</v-btn>
+      <v-btn color="primary" class="my-4 mx-5" @click="toggleCompanyForm()"> {{ !companyFormOpen ? "Update company" : "Cancel" }}</v-btn>
+      <v-btn color="primary" class="my-4 mx-5" @click="toggleLogoForm()"> {{ !logoFormOpen ? "Update logo" : "Cancel" }}</v-btn>
     </v-container>
     <!-- Update company -->
-    <v-card ref="form" class="my-4" v-show="companyFormOpen">
+    <v-card ref="form" class="col-10 mx-auto" v-show="companyFormOpen">
       <v-card-text>
         <v-text-field
             v-model="companyToEdit.name"
@@ -42,42 +42,22 @@
             v-model="companyToEdit.description"
             label="Description"
         ></v-textarea>
-        <v-btn color="primary" @click="updateCompany()"> Confirm </v-btn>
+        <v-btn color="primary" class="my-4 mx-5" @click="updateCompany()"> Confirm</v-btn>
       </v-card-text>
     </v-card>
     <!-- Update logo -->
-    <v-container class="my-4" v-show="logoFormOpen">
+    <v-card class="col-10 mx-auto" v-show="logoFormOpen">
       <p> sorry not implemented yet </p>
-    </v-container>
-
-    <!-- Reviews -->
+    </v-card>
+    <!-- Employees -->
     <v-container class="my-4">
-      <h2> Reviews</h2>
+      <h2>List of employees</h2>
       <v-data-table
-          :headers="reviewHeaders"
-          :items="$store.state.company.reviews"
+          :headers="headers"
+          :items="$store.state.employees.employees"
           :items-per-page="15"
           class="elevation-1"
       ></v-data-table>
-      <v-btn color="primary" @click="toggleReviewForm()"> {{ !reviewFormOpen ? "Write review" : "Cancel" }}</v-btn>
-    </v-container>
-    <!-- Write review -->
-    <v-container class="my-4" v-show="reviewFormOpen">
-      <v-text-field
-          v-model="reviewToCreate.studentUserId"
-          label="Student Id"
-      ></v-text-field>
-      <v-select
-          v-model="reviewToCreate.rating"
-          :items = [1,2,3,4,5,6,7,8,9,10]
-          label="Rating"
-      ></v-select>
-      <v-textarea
-          v-model="reviewToCreate.comment"
-          label="Comment"
-      ></v-textarea>
-
-      <v-btn color="primary" @click="createReview()"> Confirm </v-btn>
     </v-container>
   </div>
 </template>
@@ -88,26 +68,14 @@ export default {
   name: "Company",
   data() {
     return {
-      reviewHeaders: [
-        {text: "Reviewer", value: "reviewer"},
-        {text: "Rating", value: "rating"},
-        {text: "Comment", value: "comment"}
-      ],
       logoFormOpen: false,
       companyFormOpen: false,
-      reviewFormOpen: false,
-      companyToEdit: {
-        name: this.$store.state.company.name,
-        street: this.$store.state.company.street,
-        city: this.$store.state.company.city,
-        zipcode: this.$store.state.company.zipcode,
-        description: this.$store.state.company.description,
-      },
-      reviewToCreate: {
-        studentUserId: null,
-        rating: null,
-        comment: "",
-      },
+      companyToEdit: {},
+      headers: [
+        {text: "Id", value: "id"},
+        {text: "Name", value: "name"},
+        {text: "Email", value: "email"},
+      ],
     };
   },
   mounted() {
@@ -115,19 +83,27 @@ export default {
   },
   methods: {
     async loadData() {
-      await this.$store.dispatch('getUser', this.$store.state.user.userId);
+      await this.$store.dispatch('getCompanyUser', this.$store.state.user.userId);
+    },
+    loadCompanyToEdit() {
+      this.companyToEdit = {
+        name: this.company.name,
+        street: this.company.street,
+        city: this.company.city,
+        zipcode: this.company.zipcode,
+        description: this.company.description,
+      }
     },
     async updateCompany() {
-      this.toggleCompanyForm();
       await this.$store.dispatch('updateCompany', this.companyToEdit);
-    },
-    async createReview() {
-      this.toggleReviewForm();
-      await this.$store.dispatch('createReview', this.reviewToCreate);
+      this.toggleCompanyForm();
     },
     toggleCompanyForm() {
       if (this.logoFormOpen) {
         this.logoFormOpen = false;
+      }
+      if (!this.companyFormOpen) {
+        this.loadCompanyToEdit()
       }
       this.companyFormOpen ^= true;
     },
@@ -136,9 +112,6 @@ export default {
         this.companyFormOpen = false;
       }
       this.logoFormOpen ^= true;
-    },
-    toggleReviewForm() {
-      this.reviewFormOpen ^= true;
     },
   },
   computed: {

@@ -3,7 +3,8 @@ import VueRouter from 'vue-router'
 import Login from "@/components/Login"
 import Company from "@/components/Company"
 import Comakerships from "@/components/Comakerships";
-import Employees from "@/components/Employees";
+import Review from "@/components/Review";
+import Account from "@/components/Account";
 
 Vue.use(VueRouter)
 
@@ -19,14 +20,19 @@ const routes = [
     component: Company
   },
   {
-    path: '/employees/',
-    name: 'Employees',
-    component: Employees
+    path: '/reviews/',
+    name: 'Reviews',
+    component: Review
   },
   {
     path: '/comakerships/',
     name: 'Comakerships',
     component: Comakerships
+  },
+  {
+    path: '/account/',
+    name: 'My account',
+    component: Account
   }
 ]
 
