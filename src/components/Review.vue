@@ -33,7 +33,7 @@
           ></v-textarea>
         </v-card-text>
 
-        <v-btn color="primary" class="my-4 mx-5" @click="createReview()"> Confirm</v-btn>
+        <v-btn color="primary" class="my-4 mx-5" @click="createReview()" :disabled="!validReviewInput"> Confirm</v-btn>
       </v-card>
     </v-container>
   </div>
@@ -63,7 +63,11 @@ export default {
         alert("Student Id has to be a number")
         return
       }
-      this.reviewToCreate.studentUserId = parseInt(this.reviewToCreate.studentUserId)
+      try {
+        this.reviewToCreate.studentUserId = parseInt(this.reviewToCreate.studentUserId)
+      } catch(e) {
+        alert("Student Id has to be a number");
+      }
       this.toggleReviewForm();
       await this.$store.dispatch('createReview', this.reviewToCreate);
     },
@@ -71,6 +75,11 @@ export default {
       this.reviewFormOpen ^= true;
     },
   },
+  computed: {
+    validReviewInput() {
+      return this.reviewToCreate.studentUserId !== null && this.reviewToCreate.rating !== null
+    }
+  }
 }
 </script>
 

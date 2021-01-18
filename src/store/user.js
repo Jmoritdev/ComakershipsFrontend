@@ -23,9 +23,10 @@ export const userStore = {
         setUser(state, userData) {
             state.name = userData.name;
             state.email = userData.email;
-            if (userData.reviews !== null) {
-                state.reviews = userData.reviews;
-            }
+            state.reviews = userData.reviews;
+        },
+        setName(state, data) {
+            state.name = data.name;
         },
         resetUserState(state) {
             state.token = null;
@@ -131,17 +132,15 @@ export const userStore = {
                 });
         },
 
-        getCompanyUser({commit, dispatch}, id) {
+        getUser({commit}) {
             axios
-                .get("api/CompanyUser/" + id)
+                .get("api/Myself")
                 .then((response) => {
                     commit('setUser', {
                         name: response.data.name,
                         email: response.data.email,
-                        reviews: null,
+                        reviews: [],
                     });
-                    commit('setCompanyDetails', response.data.company)
-                    dispatch('getEmployees', response.data.company.id)
                 })
                 .catch((error) => {
                     this.error = error;

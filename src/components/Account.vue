@@ -30,7 +30,7 @@
               label="Email"
           ></v-text-field>
         </v-card-text>
-        <v-btn @click="updateUserData()" class="my-4 mx-5" color="primary"> Confirm</v-btn>
+        <v-btn @click="updateUserData()" class="my-4 mx-5" color="primary" :disabled="!validUserEdit"> Confirm</v-btn>
       </v-card>
       <!-- Edit password form -->
       <v-card v-show="passwordFormOpen" class="pa-5">
@@ -52,13 +52,17 @@
           ></v-text-field>
         </v-card-text>
 
-        <v-btn @click="updatePassword()" class="my-4 mx-5" color="primary"> Confirm</v-btn>
+        <v-btn @click="updatePassword()" class="my-4 mx-5" color="primary" :disabled="!validPasswordChange"> Confirm
+        </v-btn>
       </v-card>
     </v-container>
   </div>
 </template>
 
 <script>
+const PASSWRDRGX = /(?!.(.)\\1{2})(?!.?\\d{3}).{12,64}/;
+// eslint-disable-next-line no-control-regex
+const EMAILRGX = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+))/;
 export default {
   name: "Account",
   data() {
@@ -82,9 +86,7 @@ export default {
   },
   methods: {
     async onLoad() {
-      if (this.$store.state.user.userType === "StudentUser") {
-        await this.$store.dispatch('getStudentUser', this.$store.state.user.userId);
-      }
+      await this.$store.dispatch('getUser');
     },
     loadPersonalData() {
       this.personalData = {
@@ -102,7 +104,7 @@ export default {
       await this.$store.dispatch('changePassword', this.passData)
     },
     toggleUserForm() {
-      if (this.userFormOpen) {
+      if (!this.userFormOpen) {
         this.loadPersonalData();
       }
       this.userFormOpen ^= true;
@@ -118,6 +120,15 @@ export default {
         email: this.$store.state.user.email,
         type: this.$store.state.user.userType,
       }
+    },
+    validPasswordChange() {
+      return this.passData.NewPassword === this.passData.ConfirmNewPassword &&
+              PASSWRDRGX.test(this.passData.NewPassword);
+    },
+    validUserEdit() {
+      return (this.personalData.email !== this.user.email ||
+              this.personalData.name !== this.user.name) &&
+              EMAILRGX.test(this.personalData.email);
     }
   }
 }

@@ -9,10 +9,6 @@
 			class="elevation-1"
 			></v-data-table>
 		</v-container>
-
-		<v-container class="my-4" v-if="userType === 'StudentUser'">
-			<comakership />
-		</v-container>
 		
 		<v-container class="my-4" v-if="userType === 'CompanyUser'">
 			<comakership-put />
@@ -25,12 +21,11 @@
 </template>
 
 <script>
-import Comakership from "./comakerships/Comakership.vue";
 import ComakershipPut from "./comakerships/ComakershipPut.vue";
 import ComakershipPost from "./comakerships/ComakershipPost.vue";
 
 export default {
-components: { Comakership, ComakershipPut, ComakershipPost },
+components: { ComakershipPut, ComakershipPost },
 name: "Comakerships",
 data() {
 	return {};
