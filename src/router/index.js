@@ -5,8 +5,25 @@ import Company from "@/components/Company"
 import Comakerships from "@/components/Comakerships";
 import Review from "@/components/Review";
 import Account from "@/components/Account";
+// import store from '@/store/store'
 
 Vue.use(VueRouter)
+//
+// const ifNotAuthenticated = (to, from, next) => {
+//   if (!store.getters.isAuthenticated()) {
+//     next()
+//     return
+//   }
+//   next('/')
+// }
+//
+// const ifAuthenticated = (to, from, next) => {
+//   if (store.getters.isAuthenticated) {
+//     next()
+//     return
+//   }
+//   next('/login')
+// }
 
 const routes = [
   {

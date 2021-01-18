@@ -3,9 +3,9 @@ import router from "@/router";
 
 export const userStore = {
     state: () => ({
-        token: null,
+        token: localStorage.getItem('user-token') || null,
         userId: null,
-        userType: null,
+        userType: localStorage.getItem('user-type') || null,
         name: "",
         email: "",
         reviews: [],
@@ -55,6 +55,8 @@ export const userStore = {
                     password: authData.password,
                 })
                 .then((res) => {
+                    localStorage.setItem('user-token', res.data.Token);
+                    localStorage.setItem('user-type', res.data.UserType);
                     commit('authUser', res.data);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.Token;
                     if (res.data.UserType === "CompanyUser") {
@@ -96,6 +98,8 @@ export const userStore = {
         },
 
         logout({commit}) {
+            localStorage.removeItem('user-token');
+            delete axios.defaults.headers.common['Authorization'];
             commit('resetUserState');
             commit('resetCompanyState');
             commit('resetEmployeeState');
@@ -163,9 +167,8 @@ export const userStore = {
 
     },
     getters: {
-        isAuthenticated(state) {
-            return state.token !== null;
-        },
+        // !! = convert object to boolean, if 0/null/undefined. etc it is false
+        isAuthenticated: state => state.token !== null,
         userType(state) {
             return state.userType;
         }

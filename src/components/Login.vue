@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-space-around">
     <!-- Login form -->
-    <v-card v-if="$store.state.user.token === null" class="col-5" ref="form">
+    <v-card v-if="!$store.getters.isAuthenticated" class="col-5" ref="form">
       <v-card-text>
         <h2> Login </h2>
         <v-alert v-if="authData.error" type="error">
@@ -23,7 +23,7 @@
       <v-btn color="primary" class="my-4 mx-5" @click="login"> Login</v-btn>
     </v-card>
     <!-- Register form -->
-    <v-card v-if="$store.state.user.token === null" class="col-5" ref="form">
+    <v-card v-if="!$store.getters.isAuthenticated" class="col-5" ref="form">
       <v-card-text>
         <h2> Register </h2>
         <v-radio-group class="d-flex justify-space-around" v-model="registerStudent">
@@ -101,8 +101,7 @@
       </v-card-text>
       <v-btn color="primary" class="my-4 mx-5" @click="register" :disabled="!correctInput"> Register</v-btn>
     </v-card>
-    <!-- Edit user form -->
-    <v-card v-if="$store.state.user.token !== null">
+    <v-card v-if="$store.getters.isAuthenticated">
       <h2> You are already logged in, explore the app through the menu on the left. </h2>
     </v-card>
   </div>
