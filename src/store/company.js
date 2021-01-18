@@ -48,6 +48,21 @@ export const companyStore = {
         }
     },
     actions: {
+        getCompanyDetails({commit, dispatch}, id) {
+            axios
+                .get("api/CompanyUser/" + id)
+                .then((response) => {
+                    commit('setName', {
+                        name: response.data.name,
+                    });
+                    commit('setCompanyDetails', response.data.company)
+                    dispatch('getEmployees', response.data.company.id)
+                })
+                .catch((error) => {
+                    this.error = error;
+                    alert("something went wrong while getting userdata");
+                });
+        },
         updateCompany({commit}, companyData) {
 
             if(companyData.name === this.state.company.name) {

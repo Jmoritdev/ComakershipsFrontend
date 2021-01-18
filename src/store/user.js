@@ -3,9 +3,9 @@ import router from "@/router";
 
 export const userStore = {
     state: () => ({
-        token: null,
+        token: localStorage.getItem('user-token') || null,
         userId: null,
-        userType: null,
+        userType: localStorage.getItem('user-type') || null,
         name: "",
         email: "",
         reviews: [],
@@ -23,9 +23,10 @@ export const userStore = {
         setUser(state, userData) {
             state.name = userData.name;
             state.email = userData.email;
-            if (userData.reviews !== null) {
-                state.reviews = userData.reviews;
-            }
+            state.reviews = userData.reviews;
+        },
+        setName(state, data) {
+            state.name = data.name;
         },
         resetUserState(state) {
             state.token = null;
@@ -54,6 +55,8 @@ export const userStore = {
                     password: authData.password,
                 })
                 .then((res) => {
+                    localStorage.setItem('user-token', res.data.Token);
+                    localStorage.setItem('user-type', res.data.UserType);
                     commit('authUser', res.data);
                     axios.defaults.headers.common['Authorization'] = "Bearer " + res.data.Token;
                     if (res.data.UserType === "CompanyUser") {
@@ -95,6 +98,9 @@ export const userStore = {
         },
 
         logout({commit}) {
+            localStorage.removeItem('user-type');
+            localStorage.removeItem('user-token');
+            delete axios.defaults.headers.common['Authorization'];
             commit('resetUserState');
             commit('resetCompanyState');
             commit('resetEmployeeState');
@@ -131,17 +137,15 @@ export const userStore = {
                 });
         },
 
-        getCompanyUser({commit, dispatch}, id) {
+        getUser({commit}) {
             axios
-                .get("api/CompanyUser/" + id)
+                .get("api/Myself")
                 .then((response) => {
                     commit('setUser', {
                         name: response.data.name,
                         email: response.data.email,
-                        reviews: null,
+                        reviews: [],
                     });
-                    commit('setCompanyDetails', response.data.company)
-                    dispatch('getEmployees', response.data.company.id)
                 })
                 .catch((error) => {
                     this.error = error;
@@ -164,9 +168,8 @@ export const userStore = {
 
     },
     getters: {
-        isAuthenticated(state) {
-            return state.token !== null;
-        },
+        // !! = convert object to boolean, if 0/null/undefined. etc it is false
+        isAuthenticated: state => state.token !== null,
         userType(state) {
             return state.userType;
         }

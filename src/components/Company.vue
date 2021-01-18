@@ -17,7 +17,7 @@
       </div>
 
       <v-btn color="primary" class="my-4 mx-5" @click="toggleCompanyForm()"> {{ !companyFormOpen ? "Update company" : "Cancel" }}</v-btn>
-      <v-btn color="primary" class="my-4 mx-5" @click="toggleLogoForm()"> {{ !logoFormOpen ? "Update logo" : "Cancel" }}</v-btn>
+      <v-btn color="primary" :disabled=true class="my-4 mx-5" @click="toggleLogoForm()"> {{ !logoFormOpen ? "Update logo" : "Cancel" }}</v-btn>
     </v-container>
     <!-- Update company -->
     <v-card ref="form" class="col-10 mx-auto" v-show="companyFormOpen">
@@ -42,7 +42,7 @@
             v-model="companyToEdit.description"
             label="Description"
         ></v-textarea>
-        <v-btn color="primary" class="my-4 mx-5" @click="updateCompany()"> Confirm</v-btn>
+        <v-btn color="primary" class="my-4 mx-5" @click="updateCompany()" :disabled="!isValidEdit"> Confirm</v-btn>
       </v-card-text>
     </v-card>
     <!-- Update logo -->
@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     async loadData() {
-      await this.$store.dispatch('getCompanyUser', this.$store.state.user.userId);
+      await this.$store.dispatch('getCompanyDetails', this.$store.state.user.userId);
     },
     loadCompanyToEdit() {
       this.companyToEdit = {
@@ -129,6 +129,13 @@ export default {
     companyLogo: function () {
       return this.$store.state.company.logo;
     },
+    isValidEdit() {
+      return this.companyToEdit.name !== this.company.name ||
+          this.companyToEdit.street !== this.company.street ||
+          this.companyToEdit.city !== this.company.city ||
+          this.companyToEdit.zipcode !== this.company.zipcode ||
+          this.companyToEdit.description !== this.company.description
+    }
   },
 }
 </script>
