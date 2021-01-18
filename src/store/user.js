@@ -98,6 +98,7 @@ export const userStore = {
         },
 
         logout({commit}) {
+            localStorage.removeItem('user-type');
             localStorage.removeItem('user-token');
             delete axios.defaults.headers.common['Authorization'];
             commit('resetUserState');

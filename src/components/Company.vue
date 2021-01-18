@@ -17,7 +17,7 @@
       </div>
 
       <v-btn color="primary" class="my-4 mx-5" @click="toggleCompanyForm()"> {{ !companyFormOpen ? "Update company" : "Cancel" }}</v-btn>
-      <v-btn color="primary" class="my-4 mx-5" @click="toggleLogoForm()"> {{ !logoFormOpen ? "Update logo" : "Cancel" }}</v-btn>
+      <v-btn color="primary" :disabled=true class="my-4 mx-5" @click="toggleLogoForm()"> {{ !logoFormOpen ? "Update logo" : "Cancel" }}</v-btn>
     </v-container>
     <!-- Update company -->
     <v-card ref="form" class="col-10 mx-auto" v-show="companyFormOpen">
