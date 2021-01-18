@@ -9,7 +9,7 @@
         <v-list-item>
           <v-list-item-content>
             <v-list-item-title class="title">
-              {{ $store.state.user.name || "Please login" }}
+              {{ $store.state.user.name || "" }}
             </v-list-item-title>
             <v-list-item-subtitle>{{ $store.state.company.name || "" }}</v-list-item-subtitle>
             <v-list-item-subtitle>{{ $store.state.user.email || "" }}</v-list-item-subtitle>
